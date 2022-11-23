@@ -1,0 +1,19 @@
+{
+    "name": "repalogic/tyrios-analytics-sdk-php",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Repalogic\\repalogic\\tyrios\\analytics\\events\\": "src/",
+            "Repalogic\\repalogic\\tyrios\\analytics\\data\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name"  : "Repalogic GmbH",
+            "email" : "info@repalogic.com"
+        }
+    ],
+    "require": {},
+    
+}
