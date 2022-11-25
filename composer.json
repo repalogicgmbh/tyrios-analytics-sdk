@@ -4,8 +4,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Repalogic\\repalogic\\tyrios\\analytics\\events\\": "src/",
-            "Repalogic\\repalogic\\tyrios\\analytics\\data\\": "src/"
+            "repalogic\\tyrios\\analytics\\events\\": "src/"
         }
     },
     "authors": [
@@ -14,6 +13,6 @@
             "email" : "info@repalogic.com"
         }
     ],
-    "require": {},
+    "require": {}
     
 }
