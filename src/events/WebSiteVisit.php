@@ -7,7 +7,7 @@ class WebSiteVisit {
 
 	private $url;
 	private $userId;
-	private $sourceOfVisit;
+	private string $sourceOfVisit;
 	private $timeOfVisit;
 	private $basicEvent;
 	private $sysInfo;

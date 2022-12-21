@@ -8,10 +8,10 @@ use stdClass;
 
 class UserEngagement extends BasicEvent
 {
-    protected $engagement_time_msec;
-    protected $tags;
-    protected $userId;
-    protected $sessionId;
+    protected string $engagement_time_msec;
+    protected array $tags;
+    protected string $userId;
+    protected string $sessionId;
 
     public function __construct(string $engagement_time_msec,  string $userId ="",array $tags = [],string $sessionId="")
     {

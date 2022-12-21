@@ -13,6 +13,7 @@ class Item
     public ?string $item_brand;
     public array $item_categories;
     public ?string $item_list_id;
+    public ?string $item_category_id;
     public ?string $item_list_name;
     public ?string $item_variant;
     public float $price;
@@ -29,12 +30,13 @@ class Item
      * @param $item_brand
      * @param $item_categories
      * @param $item_list_id
+     * @param $item_category_id
      * @param $item_list_name
      * @param $item_variant
      * @param $price
      * @param $quantity
      */
-    public function __construct(string $item_id,string $item_name, array $item_categories,float $price,int $quantity,array $tags = [],string $affiliation = "",string $currency = "",float $discount = 0,int $index = null, $item_brand = "",string $item_list_id = "",string $item_list_name="",string $item_variant = "" )
+    public function __construct(string $item_id,string $item_name, array $item_categories,float $price,int $quantity,array $tags = [],string $affiliation = "",string $currency = "",float $discount = 0,int $index = null, $item_brand = "",string $item_list_id = "",string $item_category_id="",string $item_list_name="",string $item_variant = "" )
     {
         $this->item_id = $item_id;
         $this->item_name = $item_name;
@@ -46,6 +48,7 @@ class Item
         $this->item_brand = $item_brand;
         $this->item_categories = $item_categories;
         $this->item_list_id = $item_list_id;
+        $this->item_category_id = $item_category_id;
         $this->item_list_name = $item_list_name;
         $this->item_variant = $item_variant;
         $this->price = $price;

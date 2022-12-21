@@ -4,7 +4,6 @@ namespace repalogic\tyrios\analytics\events;
 use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
 use stdClass;
-
 class PageView extends BasicEvent{
 
 	protected string $url;

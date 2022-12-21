@@ -8,12 +8,12 @@ use stdClass;
 
 class VideoComplete extends BasicEvent
 {
-    protected $video_duration;
-    protected $tags;
-    protected $userId;
-    protected $video_provider;
-    protected $video_title;
-    protected $video_url;
+    protected string $video_duration;
+    protected array $tags;
+    protected string $userId;
+    protected string $video_provider;
+    protected string $video_title;
+    protected string $video_url;
 
     public function __construct(string $video_duration,
                                 string $video_provider,

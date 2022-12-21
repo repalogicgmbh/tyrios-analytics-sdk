@@ -8,12 +8,12 @@ use stdClass;
 
 class FormSubmission extends BasicEvent
 {
-    protected $form_name;
-    protected $form_location;
-    protected $form_type;
-    protected $tags;
-    protected $userId;
-    protected $sessionId;
+    protected string $form_name;
+    protected string $form_location;
+    protected string $form_type;
+    protected array $tags;
+    protected string $userId;
+    protected string $sessionId;
 
     public function __construct(string $form_name, string $form_location,string $form_type, array $tags = [], string $userId="", string $sessionId = "")
     {

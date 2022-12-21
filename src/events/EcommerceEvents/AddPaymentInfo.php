@@ -10,14 +10,14 @@ class AddPaymentInfo extends BasicEvent
 {
     protected string $currency;
     protected string $value;
-    protected $items;
+    protected array $items;
     protected ?string $coupon;
     protected string $payment_type;
     protected ?array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
-    public function __construct(string $currency, string $value, $items,string $payment_type,string $coupon = "",
+    public function __construct(string $currency, string $value,array $items,string $payment_type,string $coupon = "",
                                 array $tags = [],
                                 string $userId = "",
                                 string $sessionId = "",

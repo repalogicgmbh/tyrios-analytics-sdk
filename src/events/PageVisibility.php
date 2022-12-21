@@ -6,10 +6,10 @@ use repalogic\tyrios\analytics\data\SystemInformation;
 
 class PageVisibility extends BasicEvent {
 
-	private $url;
-	private $userId;
+	private string $url;
+	private int $userId;
 	private $pageTitle;
-	private $visibilityStatus;
+	private string $visibilityStatus;
 	private $visibilityTime;
 	private $basicEvent;
 	private $sysInfo;

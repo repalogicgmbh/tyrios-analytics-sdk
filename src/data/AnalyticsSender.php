@@ -20,7 +20,7 @@ class AnalyticsSender
         $this->branch = $branch;
         $this->postCode = $postCode;
         $this->countryCode = $countryCode;
-        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?: null;
+        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
 
     }
 
@@ -58,6 +58,7 @@ class AnalyticsSender
         $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
 
         $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
+        echo $request;
         fwrite($socket, $request);
         fclose($socket);
 
@@ -75,7 +76,7 @@ class AnalyticsSender
         $headers = array(
             "Accept: application/json",
             "Content-Type: application/json",
-            "Authorization: Basic {$accessToken->accesstoken()}"
+            "Authorization: Basic {$accessToken}"
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($analysisData->toJsonStruct()));
@@ -88,4 +89,3 @@ class AnalyticsSender
 
     }
 }
-

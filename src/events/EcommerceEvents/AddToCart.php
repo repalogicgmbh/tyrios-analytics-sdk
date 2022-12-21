@@ -10,13 +10,13 @@ class AddToCart extends BasicEvent
 {
     protected string $currency;
     protected string $value;
-    protected $items;
+    protected array $items;
     protected ?string $coupon;
     protected ?array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
-    public function __construct(string $currency, string $value, $items, string $coupon = "", array $tags = [],
+    public function __construct(string $currency, string $value,array $items, string $coupon = "", array $tags = [],
                                 string $userId = "",
                                 string $sessionId = "",
     )

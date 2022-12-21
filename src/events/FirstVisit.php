@@ -8,10 +8,10 @@ use stdClass;
 
 class FirstVisit extends BasicEvent
 {
-    protected $ip_address;
-    protected $tags;
-    protected $userId;
-    protected $traffic_name;
+    protected string $ip_address;
+    protected array $tags;
+    protected string $userId;
+    protected string $traffic_name;
 
     public function __construct( string $traffic_name,
                                 string $ip_address = "",array  $tags = [], string $userId ="",

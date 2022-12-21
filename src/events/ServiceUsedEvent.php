@@ -6,10 +6,10 @@ use repalogic\tyrios\analytics\data\BasicEvent;
 
 class ServiceUsedEvent extends  BasicEvent{
 
-	private $app;
-	private $functionality;
+	private string $app;
+	private string $functionality;
 	private $project;
-	private $tags ;
+	private array $tags ;
 
 	public function __construct(string $app,string $functionality,$project,array $tags =[]){
 		parent::__construct(date("Y-m-d\TH:i:s\Z"), "Click", "Module");				

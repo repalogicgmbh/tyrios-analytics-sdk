@@ -8,11 +8,11 @@ use stdClass;
 
 class Scroll extends BasicEvent
 {
-    protected $section_name;
-    protected $tags;
-    protected $userId;
-    protected $sessionId;
-    protected $engagement_time_msec;
+    protected string $section_name;
+    protected array $tags;
+    protected string $userId;
+    protected string $sessionId;
+    protected string $engagement_time_msec;
 
     public function __construct(string $section_name,
                                 string $engagement_time_msec,array  $tags = [],
