@@ -20,7 +20,7 @@ class AnalyticsSender
         $this->branch = $branch;
         $this->postCode = $postCode;
         $this->countryCode = $countryCode;
-        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?: null;
+        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
 
     }
 
