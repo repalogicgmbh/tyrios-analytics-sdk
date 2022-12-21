@@ -2,7 +2,6 @@
 
 namespace repalogic\tyrios\analytics\data;
 
-use repalogic\tyrios\analytics\util\TyriosLogin;
 use stdClass;
 
 class AnalyticsSender
@@ -21,21 +20,13 @@ class AnalyticsSender
         $this->branch = $branch;
         $this->postCode = $postCode;
         $this->countryCode = $countryCode;
-        $ua = $this->getBrowser();
-        $user_agent = "Browser:" . $ua['name'] . "|" . "Version:" . $ua['version'] . "|" . "Reports:" . $ua['userAgent'];
-        $this->userAgent = $user_agent;
-    }
+        $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?: null;
 
-    public function tyriosLogin()
-    {
-        $accessToken = new TyriosLogin($this->user, $this->password);
-        return $accessToken;
     }
 
     public function sendEvents($basicEvents)
     {
-        $url = "http://localhost:8014/addEvent";
-        $curl = curl_init();
+        $endpoint = 'https://analytics.tyrios.io/addEvent';
         $object = new stdClass();
         $location = new stdClass();
         $location->postCode = $this->postCode;
@@ -47,32 +38,34 @@ class AnalyticsSender
             $each->location = $location;
             return $each;
         }, $basicEvents);
-        $request = $object;
-        echo json_encode($request);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($request));
 
-        // OPTIONS:
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($curl, CURLOPT_USERPWD, "$this->user:$this->password");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-        ));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        // EXECUTE:
-        $result = curl_exec($curl);
-        if (!$result) {
-            die("Connection Failure");
-        }
-        curl_close($curl);
-        return $result;
+        $postData = $object;
+
+        $endpointParts = parse_url($endpoint);
+        $endpointParts['path'] = $endpointParts['path'] ?? '/';
+        $endpointParts['port'] = $endpointParts['port'] ?? $endpointParts['scheme'] === 'https' ? 443 : 80;
+
+        $contentLength = count((array)$postData);
+
+        $request = "POST {$endpointParts['path']} HTTP/1.1\r\n";
+        $request .= "Host: {$endpointParts['host']}\r\n";
+        $request .= "User-Agent: My application v2.2.0\r\n";
+        $request .= "Authorization: Bearer api_key\r\n";
+        $request .= "Content-Length: {$contentLength}\r\n";
+        $request .= "Content-Type: application/json\r\n\r\n";
+        $request .= json_encode($postData);
+
+        $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
+
+        $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
+        fwrite($socket, $request);
+        fclose($socket);
+
     }
 
     public function filterEvent(AnalysisData $analysisData)
     {
-        $accessToken = new TyriosLogin($this->user, $this->password);
-
+        $accessToken = base64_encode( "{$this->user}:{$this->password}");
         $url = "https://analytics.tyrios.io/analysisFilter";
         $curl = curl_init();
 
@@ -93,84 +86,6 @@ class AnalyticsSender
         }
         return $response;
 
-    }
-
-    public function getBrowser()
-    {
-        $u_agent = $_SERVER['HTTP_USER_AGENT'];
-        $bname = 'Unknown';
-        $platform = 'Unknown';
-        $version = "";
-
-        //First get the platform?
-        if (preg_match('/linux/i', $u_agent)) {
-            $platform = 'linux';
-        } elseif (preg_match('/macintosh|mac os x/i', $u_agent)) {
-            $platform = 'mac';
-        } elseif (preg_match('/windows|win32/i', $u_agent)) {
-            $platform = 'windows';
-        }
-
-        // Next get the name of the useragent yes seperately and for good reason
-        if (preg_match('/MSIE/i', $u_agent) && !preg_match('/Opera/i', $u_agent)) {
-            $bname = 'Internet Explorer';
-            $ub = "MSIE";
-        } elseif (preg_match('/Firefox/i', $u_agent)) {
-            $bname = 'Mozilla Firefox';
-            $ub = "Firefox";
-        } elseif (preg_match('/OPR/i', $u_agent)) {
-            $bname = 'Opera';
-            $ub = "Opera";
-        } elseif (preg_match('/Chrome/i', $u_agent) && !preg_match('/Edge/i', $u_agent)) {
-            $bname = 'Google Chrome';
-            $ub = "Chrome";
-        } elseif (preg_match('/Safari/i', $u_agent) && !preg_match('/Edge/i', $u_agent)) {
-            $bname = 'Apple Safari';
-            $ub = "Safari";
-        } elseif (preg_match('/Netscape/i', $u_agent)) {
-            $bname = 'Netscape';
-            $ub = "Netscape";
-        } elseif (preg_match('/Edge/i', $u_agent)) {
-            $bname = 'Edge';
-            $ub = "Edge";
-        } elseif (preg_match('/Trident/i', $u_agent)) {
-            $bname = 'Internet Explorer';
-            $ub = "MSIE";
-        }
-
-        // finally get the correct version number
-        $known = array('Version', $ub, 'other');
-        $pattern = '#(?<browser>' . join('|', $known) .
-            ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
-        if (!preg_match_all($pattern, $u_agent, $matches)) {
-            // we have no matching number just continue
-        }
-        // see how many we have
-        $i = count($matches['browser']);
-        if ($i != 1) {
-            //we will have two since we are not using 'other' argument yet
-            //see if version is before or after the name
-            if (strripos($u_agent, "Version") < strripos($u_agent, $ub)) {
-                $version = $matches['version'][0];
-            } else {
-                $version = $matches['version'][1];
-            }
-        } else {
-            $version = $matches['version'][0];
-        }
-
-        // check if we have a number
-        if ($version == null || $version == "") {
-            $version = "?";
-        }
-
-        return array(
-            'userAgent' => $u_agent,
-            'name' => $bname,
-            'version' => $version,
-            'platform' => $platform,
-            'pattern' => $pattern
-        );
     }
 }
 
