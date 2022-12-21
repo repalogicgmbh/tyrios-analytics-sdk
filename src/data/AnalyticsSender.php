@@ -75,7 +75,7 @@ class AnalyticsSender
         $headers = array(
             "Accept: application/json",
             "Content-Type: application/json",
-            "Authorization: Basic {$accessToken->accesstoken()}"
+            "Authorization: Basic {$accessToken}"
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($analysisData->toJsonStruct()));
