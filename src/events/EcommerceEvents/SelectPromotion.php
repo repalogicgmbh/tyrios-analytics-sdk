@@ -34,7 +34,9 @@ class SelectPromotion extends BasicEvent
 
         $this->extracted($creative_name, $object, $creative_slot,$promotion_id,$promotion_name, $tags, $userId,  $items, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "select_promotion", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "select_promotion", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(string $creative_name, object $object, string $creative_slot,string $promotion_id, string $promotion_name,array $tags, string $userId, array $items, string $sessionId): void

@@ -16,7 +16,7 @@ class Refund extends BasicEvent
     protected int $refund_quantity;
     protected string $reject_reason;
     protected ?float $tax;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -38,7 +38,9 @@ class Refund extends BasicEvent
 
         $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $refund_amount, $refund_quantity,$reject_reason, $tax, $items, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "refund", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "refund", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
 

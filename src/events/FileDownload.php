@@ -48,7 +48,9 @@ class FileDownload extends BasicEvent
         $object->link_text = $link_text;
         $object->link_url = $link_url;
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "file_download",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "file_download",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function toJsonStruct(): array

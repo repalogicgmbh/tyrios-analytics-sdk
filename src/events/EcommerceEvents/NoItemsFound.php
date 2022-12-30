@@ -23,7 +23,10 @@ class NoItemsFound extends BasicEvent
         $this->extracted( $this, $item_search_name,$item_filters, $tags,$userId,  $sessionId,);
         $object = new stdClass();
         $this->extracted( $object, $item_search_name,$item_filters, $tags,$userId,  $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "no_items_found", $object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "no_items_found", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(object $object,string $item_search_name,array $item_filters, array $tags ,string $userId,  string $sessionId): void

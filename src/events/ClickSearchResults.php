@@ -11,7 +11,7 @@ class ClickSearchResults extends BasicEvent
     protected string $search_term;
     protected string $search_query;
     protected ?string $search_type;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $sessionId;
     protected ?string $userId;
 
@@ -29,7 +29,10 @@ class ClickSearchResults extends BasicEvent
         $object->tags = $tags;
         $object->sessionId = $sessionId;
         $object->userId = $userId;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "click_search_results",$object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "click_search_results",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 }
 

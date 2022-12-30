@@ -12,7 +12,7 @@ class ViewPromotion extends BasicEvent
     protected string $promotion_id;
     protected array $promotion_items_list;
     protected ?string $promotion_name;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -28,7 +28,9 @@ class ViewPromotion extends BasicEvent
 
         $this->extracted($creative_name, $object, $promotion_id, $tags, $userId, $promotion_name,  $promotion_items_list, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_promotion", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_promotion", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
 

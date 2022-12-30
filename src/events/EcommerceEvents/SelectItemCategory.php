@@ -10,7 +10,7 @@ class SelectItemCategory extends BasicEvent
     protected string $category_id;
     protected string $sub_category_name;
     protected string $sub_category_id;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -27,7 +27,10 @@ class SelectItemCategory extends BasicEvent
         $this->extracted($category_name, $this, $category_id,$sub_category_name,$sub_category_id, $tags, $userId,  $sessionId);
         $object = new stdClass();
         $this->extracted($category_name, $object, $category_id,$sub_category_name,$sub_category_id, $tags, $userId,  $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "select_item_category",$object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "select_item_category",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(string $category_name, object $object, string $category_id,?string $sub_category_name,?string $sub_category_id, ?array $tags, ?string $userId,  ?string $sessionId): void

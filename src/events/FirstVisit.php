@@ -24,7 +24,8 @@ class FirstVisit extends BasicEvent
 
         $this->extracted( $object, $traffic_name,$ip_address, $tags, $userId,  $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "first_visit",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "first_visit",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
     public function extracted(object $object, string $traffic_name,string  $ip_address, array $tags = [], string $userId="", string $sessionId=""): void
     {

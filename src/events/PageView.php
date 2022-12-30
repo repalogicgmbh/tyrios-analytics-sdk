@@ -7,11 +7,11 @@ use stdClass;
 class PageView extends BasicEvent{
 
 	protected string $url;
-	protected ?array $tags;
+	protected array $tags;
 	protected string $userId;
 	protected string $sessionId;
 	protected string $pageTitle;
-	protected ?string $ip_address;
+	protected string $ip_address;
 	protected ?string $previous_page;
 
 	public function __construct(string $url, string $pageTitle,  string $ip_address = "",string $previous_page = "",array $tags=[],string $userId = "", string $sessionId = ""){
@@ -31,7 +31,9 @@ class PageView extends BasicEvent{
         $object->sessionId 		= $sessionId;
         $object->ip_address = $ip_address;
         $object->previous_page = $previous_page;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
 }

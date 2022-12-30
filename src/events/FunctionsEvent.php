@@ -12,7 +12,7 @@ class FunctionsEvent extends BasicEvent
     protected string $function_value_selected;
     protected string $function_location_url;
     protected string $function_location;
-    protected ?array $tags;
+    protected array $tags;
     protected string $userId;
     protected string $sessionId;
 
@@ -34,7 +34,9 @@ class FunctionsEvent extends BasicEvent
         $object->userId = $userId;
         $object->sessionId = $sessionId;
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "functions_event",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "functions_event",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 }
 

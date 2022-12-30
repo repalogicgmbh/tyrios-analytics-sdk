@@ -9,15 +9,24 @@ class ServiceUsedEvent extends  BasicEvent{
 	private string $app;
 	private string $functionality;
 	private $project;
-	private array $tags ;
+	protected array $tags ;
 
-	public function __construct(string $app,string $functionality,$project,array $tags =[]){
-		parent::__construct(date("Y-m-d\TH:i:s\Z"), "Click", "Module");				
-		$this->app 			 = $app;
+    protected ?string $userId;
+    protected ?string $sessionId;
+
+	public function __construct(string $app,string $functionality,$project,array $tags =[],string $sessionId="",string $userId=""){
+        $this->app 			 = $app;
 		$this->functionality = $functionality;
 		$this->project 		 = $project;
 		$this->tags 		 = $tags;
-	} 
+
+        $this->userId = $userId;
+        $this->sessionId = $sessionId;
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date("Y-m-d\TH:i:s\Z"), "Click", "Module",null,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+
+    }
 	
 	public function toJsonStruct() :? array {
 		

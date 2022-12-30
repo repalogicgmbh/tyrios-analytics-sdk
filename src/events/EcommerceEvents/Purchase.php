@@ -17,7 +17,7 @@ class Purchase extends BasicEvent
     protected ?float $tax;
     protected array $items;
     protected ?string $coupon;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -38,7 +38,9 @@ class Purchase extends BasicEvent
             $payment_mode, $price, $quantity, $shipping_cost, $tax
         );
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "purchase", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "purchase", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
 

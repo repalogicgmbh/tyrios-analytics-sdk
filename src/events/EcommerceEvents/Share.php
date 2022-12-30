@@ -24,7 +24,10 @@ class Share extends BasicEvent
         $this->extracted($share_type, $this, $share_platform,$share_item_id,$share_item_name, $tags, $userId,  $sessionId);
         $object = new stdClass();
         $this->extracted($share_type, $object, $share_platform,$share_item_id,$share_item_name, $tags, $userId,  $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "share", $object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "share", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(string $share_type, object $object, string $share_platform,string $share_item_id,string $share_item_name, ?array $tags, ?string $userId,  ?string $sessionId): void

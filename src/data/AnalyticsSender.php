@@ -21,7 +21,6 @@ class AnalyticsSender
         $this->postCode = $postCode;
         $this->countryCode = $countryCode;
         $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-
     }
 
     public function sendEvents($basicEvents)

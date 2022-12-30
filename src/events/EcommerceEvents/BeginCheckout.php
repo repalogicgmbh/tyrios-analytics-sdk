@@ -10,13 +10,13 @@ class BeginCheckout extends BasicEvent
 {
     protected string $currency;
     protected string $value;
-    protected $items;
+    protected array $items;
     protected ?string $coupon;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
-    public function __construct(string $currency, string $value, $items,
+    public function __construct(string $currency, string $value, array $items,
                                 string $coupon = "",
                                 array $tags = [],
                                 string $userId = "",
@@ -29,7 +29,9 @@ class BeginCheckout extends BasicEvent
 
         $this->extracted($currency, $object, $value, $tags, $userId, $coupon,  $items, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "begin_checkout", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "begin_checkout", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function toJsonStruct(): array

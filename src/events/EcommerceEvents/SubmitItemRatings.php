@@ -25,7 +25,10 @@ class SubmitItemRatings extends BasicEvent
         $this->extracted( $this, $item_name,$item_id,$rating, $tags,$userId,  $sessionId,);
         $object = new stdClass();
         $this->extracted( $object, $item_name,$item_id,$rating, $tags,$userId,  $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "submit_item_ratings", $object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "submit_item_ratings", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(object $object,string $item_name,string $item_id,string $rating, array $tags ,string $userId,  string $sessionId): void

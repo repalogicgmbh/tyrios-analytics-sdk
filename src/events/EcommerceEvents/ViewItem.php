@@ -11,7 +11,7 @@ class ViewItem extends BasicEvent
     protected string $currency;
     protected string $value;
     protected Item $item;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -27,7 +27,9 @@ class ViewItem extends BasicEvent
 
         $this->extracted($currency, $object, $value, $tags, $userId,  $item, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function toJsonStruct(): array

@@ -12,7 +12,7 @@ class ViewItemList extends BasicEvent
     protected string $item_list_name;
     protected array $items;
     protected string $item_list_category;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -28,7 +28,9 @@ class ViewItemList extends BasicEvent
 
         $this->extracted($item_list_id, $object, $item_list_name, $tags, $userId,  $item_list_category, $items, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function toJsonStruct(): array

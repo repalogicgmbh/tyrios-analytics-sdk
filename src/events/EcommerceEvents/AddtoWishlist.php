@@ -27,7 +27,9 @@ class AddToWishList extends BasicEvent
 
         $this->extracted($currency, $object, $value, $tags, $userId, $coupon,  $items, $sessionId);
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_to_wishlist", $object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_to_wishlist", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
 

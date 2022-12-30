@@ -20,7 +20,10 @@ class Search extends BasicEvent
         $this->extracted($search_term, $this, $autosuggest, $tags, $userId,  $sessionId);
         $object = new stdClass();
         $this->extracted($search_term, $object, $autosuggest, $tags, $userId,  $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "search", $object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "search", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function extracted(string $search_term, object $object, bool $autosuggest, ?array $tags, ?string $userId,  ?string $sessionId): void

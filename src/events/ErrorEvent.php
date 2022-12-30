@@ -12,7 +12,7 @@ class ErrorEvent extends BasicEvent
     protected string $error_type;
     protected string $error_stacktrace;
     protected string $error_location;
-    protected ?array $tags;
+    protected array $tags;
     protected string $userId;
     protected string $sessionId;
 
@@ -34,7 +34,9 @@ class ErrorEvent extends BasicEvent
         $object->userId = $userId;
         $object->sessionId = $sessionId;
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "error_event",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "error_event",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 }
 

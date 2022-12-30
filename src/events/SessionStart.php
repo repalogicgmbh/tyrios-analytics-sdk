@@ -25,7 +25,9 @@ class SessionStart extends BasicEvent
         $object->userId = $userId;
         $object->sessionId = $sessionId;
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "session_start",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "session_start",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 }
 

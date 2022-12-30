@@ -13,7 +13,7 @@ class AddPaymentInfo extends BasicEvent
     protected array $items;
     protected ?string $coupon;
     protected string $payment_type;
-    protected ?array $tags;
+    protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
@@ -26,7 +26,10 @@ class AddPaymentInfo extends BasicEvent
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $payment_type, $items, $sessionId);
         $object = new stdClass();
         $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $payment_type, $items, $sessionId);
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_payment_info",$object);
+
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_payment_info",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 
     public function toJsonStruct(): array

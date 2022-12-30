@@ -28,7 +28,9 @@ class EndEngagementEvent extends BasicEvent
         $object->userId = $userId;
         $object->sessionId = $sessionId;
 
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "start_engagement_event",$object);
+        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
+        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "start_engagement_event",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
     }
 }
 
