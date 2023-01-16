@@ -2,15 +2,14 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
-use stdClass;
+use repalogic\tyrios\analytics\data\WebEvents;
 
-class VideoComplete extends BasicEvent
+class VideoComplete extends WebEvents
 {
     protected string $video_duration;
     protected array $tags;
-    protected string $userId;
+    protected ?string $userId;
+    protected ?string $sessionId;
     protected string $video_provider;
     protected string $video_title;
     protected string $video_url;
@@ -29,18 +28,20 @@ class VideoComplete extends BasicEvent
         $this->tags = $tags;
         $this->userId = $userId;
         $this->sessionId = $sessionId;
-        $object = new stdClass();
-        $object->video_duration = $video_duration;
-        $object->video_provider = $video_provider;
-        $object->video_title = $video_title;
-        $object->video_url = $video_url;
-        $object->tags = $tags;
-        $object->userId = $userId;
-        $object->sessionId = $sessionId;
+
+        $object["video_duration"] = $video_duration;
+        $object["video_provider"] = $video_provider;
+        $object["video_title"] = $video_title;
+        $object["video_url"] = $video_url;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "video_complete",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "video_complete",$object);
     }
 }
 

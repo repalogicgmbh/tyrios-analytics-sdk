@@ -2,11 +2,11 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class AddPaymentInfo extends BasicEvent
+class AddPaymentInfo extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -24,12 +24,21 @@ class AddPaymentInfo extends BasicEvent
     )
     {
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $payment_type, $items, $sessionId);
-        $object = new stdClass();
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $payment_type, $items, $sessionId);
+
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["payment_type"] = $payment_type;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_payment_info",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "add_payment_info",$object);
     }
 
     public function toJsonStruct(): array

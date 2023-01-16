@@ -1,18 +1,19 @@
 <?php
 namespace repalogic\tyrios\analytics\events;
 
+use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
 
 class WebSiteVisit {
 
-	private $url;
-	private $userId;
+	private string $url;
+	private string $userId;
 	private string $sourceOfVisit;
-	private $timeOfVisit;
-	private $basicEvent;
-	private $sysInfo;
+	private string $timeOfVisit;
+	private BasicEvent $basicEvent;
+	private SystemInformation $sysInfo;
 	
-	public function __construct(int $userId, $url, string $sourceOfVisit, $timeOfVisit, SystemInformation $sysInfo) {
+	public function __construct(string $userId,string $url, string $sourceOfVisit,string $timeOfVisit, SystemInformation $sysInfo) {
 		$this->userId = $userId;
 		$this->url = $url;
 		$this->sourceOfVisit = $sourceOfVisit;

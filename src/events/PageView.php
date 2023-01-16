@@ -1,15 +1,14 @@
 <?php
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
-use stdClass;
-class PageView extends BasicEvent{
+use repalogic\tyrios\analytics\data\WebEvents;
+
+class PageView extends WebEvents {
 
 	protected string $url;
 	protected array $tags;
-	protected string $userId;
-	protected string $sessionId;
+	protected ?string $userId;
+	protected ?string $sessionId;
 	protected string $pageTitle;
 	protected string $ip_address;
 	protected ?string $previous_page;
@@ -23,17 +22,17 @@ class PageView extends BasicEvent{
 		$this->pageTitle 	= $pageTitle;
 		$this->ip_address 	= $ip_address;
 
-        $object = new stdClass();
-        $object->pageTitle = $pageTitle;
-        $object->url = $url;
-        $object->tags = $tags;
-        $object->userId 		= $userId;
-        $object->sessionId 		= $sessionId;
-        $object->ip_address = $ip_address;
-        $object->previous_page = $previous_page;
+        $object["pageTitle"] = $pageTitle;
+        $object["url"] = $url;
+        $object["tags"] = $tags;
+        $object["userId"] 		= $userId;
+        $object["sessionId"] 		= $sessionId;
+        $object["ip_address"] = $ip_address;
+        $object["previous_page"] = $previous_page;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object);
     }
 
 }

@@ -2,11 +2,11 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class ViewItem extends BasicEvent
+class ViewItem extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -23,13 +23,18 @@ class ViewItem extends BasicEvent
     {
         $this->extracted($currency, $this, $value, $tags, $userId,  $item, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($currency, $object, $value, $tags, $userId,  $item, $sessionId);
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["item"] = $item;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "view_item", $object);
     }
 
     public function toJsonStruct(): array

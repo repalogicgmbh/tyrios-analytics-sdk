@@ -2,34 +2,39 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class RemovefromCart extends BasicEvent
+class RemovefromCart extends WebEvents
 {
     protected string $currency;
     protected string $value;
-    protected $items;
+    protected array $items;
     protected ?string $coupon;
     protected array $tags;
     protected ?string $userId;
     protected ?string $sessionId;
 
-    public function __construct(string $currency, string $value, $items,string $coupon = "", array $tags = [],
+    public function __construct(string $currency, string $value,array $items,string $coupon = "", array $tags = [],
                                 string $userId = "",
                                 string $sessionId = "",
     )
     {
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon,  $items, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon,  $items, $sessionId);
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "remove_from_cart", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "remove_from_cart", $object);
     }
 
 

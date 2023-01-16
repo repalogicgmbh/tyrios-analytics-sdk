@@ -2,11 +2,11 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class ViewItemList extends BasicEvent
+class ViewItemList extends WebEvents
 {
     protected string $item_list_id;
     protected string $item_list_name;
@@ -24,13 +24,19 @@ class ViewItemList extends BasicEvent
     {
         $this->extracted($item_list_id, $this, $item_list_name, $tags, $userId,  $item_list_category, $items, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($item_list_id, $object, $item_list_name, $tags, $userId,  $item_list_category, $items, $sessionId);
+        $object["item_list_id"] = $item_list_id;
+        $object["item_list_name"] = $item_list_name;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["item_list_category"] = $item_list_category;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object);
     }
 
     public function toJsonStruct(): array

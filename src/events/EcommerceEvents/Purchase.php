@@ -2,11 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class Purchase extends BasicEvent
+class Purchase extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -32,15 +31,24 @@ class Purchase extends BasicEvent
             $payment_mode, $price, $quantity, $shipping_cost, $tax
         );
 
-        $object = new stdClass();
-
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $items, $sessionId,
-            $payment_mode, $price, $quantity, $shipping_cost, $tax
-        );
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
+        $object["payment_mode"] = $payment_mode;
+        $object["quantity"] = $quantity;
+        $object["price"] = $price;
+        $object["shipping_cost"] = $shipping_cost;
+        $object["tax"] = $tax;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "purchase", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "purchase", $object);
     }
 
 

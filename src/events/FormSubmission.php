@@ -2,18 +2,16 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
-use stdClass;
+use repalogic\tyrios\analytics\data\WebEvents;
 
-class FormSubmission extends BasicEvent
+class FormSubmission extends WebEvents
 {
     protected string $form_name;
     protected string $form_location;
     protected string $form_type;
     protected array $tags;
-    protected string $userId;
-    protected string $sessionId;
+    protected ?string $userId;
+    protected ?string $sessionId;
 
     public function __construct(string $form_name, string $form_location,string $form_type, array $tags = [], string $userId="", string $sessionId = "")
     {
@@ -23,17 +21,19 @@ class FormSubmission extends BasicEvent
         $this->tags = $tags;
         $this->userId = $userId;
         $this->sessionId = $sessionId;
-        $object = new stdClass();
-        $object->form_name = $form_name;
-        $object->form_location = $form_location;
-        $object->form_type = $form_type;
-        $object->tags = $tags;
-        $object->userId = $userId;
-        $object->sessionId = $sessionId;
+
+        $object["form_name"] = $form_name;
+        $object["form_location"] = $form_location;
+        $object["form_type"] = $form_type;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "form_submission",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "form_submission",$object);
     }
 }
 

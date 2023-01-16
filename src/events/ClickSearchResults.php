@@ -2,11 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
-use stdClass;
+use repalogic\tyrios\analytics\data\WebEvents;
 
-class ClickSearchResults extends BasicEvent
+class ClickSearchResults extends WebEvents
 {
     protected string $search_term;
     protected string $search_query;
@@ -22,17 +20,19 @@ class ClickSearchResults extends BasicEvent
         $this->search_type = $search_type;
         $this->tags = $tags;
         $this->sessionId = $sessionId;
-        $object = new stdClass();
-        $object->search_term = $search_term;
-        $object->search_query = $search_query;
-        $object->search_type = $search_type;
-        $object->tags = $tags;
-        $object->sessionId = $sessionId;
-        $object->userId = $userId;
+
+        $object["search_term"] = $search_term;
+        $object["search_query"] = $search_query;
+        $object["search_type"] = $search_type;
+        $object["tags"] = $tags;
+        $object["sessionId"] = $sessionId;
+        $object["userId"] = $userId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "click_search_results",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "click_search_results",$object);
     }
 }
 

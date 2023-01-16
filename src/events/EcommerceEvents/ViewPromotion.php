@@ -2,11 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class ViewPromotion extends BasicEvent
+class ViewPromotion extends WebEvents
 {
     protected string $creative_name;
     protected string $promotion_id;
@@ -24,13 +23,19 @@ class ViewPromotion extends BasicEvent
     {
         $this->extracted($creative_name, $this, $promotion_id, $tags, $userId, $promotion_name,  $promotion_items_list, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($creative_name, $object, $promotion_id, $tags, $userId, $promotion_name,  $promotion_items_list, $sessionId);
+        $object["creative_name"] = $creative_name;
+        $object["promotion_id"] = $promotion_id;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["promotion_name"] = $promotion_name;
+        $object["promotion_items_list"] = $promotion_items_list;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_promotion", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "view_promotion", $object);
     }
 
 

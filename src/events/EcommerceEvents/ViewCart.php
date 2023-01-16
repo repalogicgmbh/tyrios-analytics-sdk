@@ -2,11 +2,12 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
+
 use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class ViewCart extends BasicEvent
+class ViewCart extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -24,13 +25,19 @@ class ViewCart extends BasicEvent
     {
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon,  $items, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon,  $items, $sessionId);
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "view_cart", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "view_cart", $object);
     }
 
     public function toJsonStruct(): array

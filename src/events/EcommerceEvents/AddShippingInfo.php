@@ -2,11 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class AddShippingInfo extends BasicEvent
+class AddShippingInfo extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -31,12 +30,22 @@ class AddShippingInfo extends BasicEvent
     {
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $shipping_tier, $country, $region, $items, $sessionId);
 
-        $object = new stdClass();
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["shipping_tier"] = $shipping_tier;
+        $object["country"] = $country;
+        $object["region"] = $region;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $shipping_tier, $country, $region, $items, $sessionId);
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "add_shipping_info", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "add_shipping_info", $object);
 
     }
 

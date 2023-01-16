@@ -2,9 +2,9 @@
 namespace repalogic\tyrios\analytics\events;
 
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\BasicEvent;
+use repalogic\tyrios\analytics\data\WebEvents;
 
-class ServiceUsedEvent extends  BasicEvent{
+class ServiceUsedEvent extends  WebEvents {
 
 	private string $app;
 	private string $functionality;
@@ -23,8 +23,10 @@ class ServiceUsedEvent extends  BasicEvent{
         $this->userId = $userId;
         $this->sessionId = $sessionId;
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date("Y-m-d\TH:i:s\Z"), "Click", "Module",null,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date("Y-m-d\TH:i:s\Z"), "Click", "Module",null);
 
     }
 	

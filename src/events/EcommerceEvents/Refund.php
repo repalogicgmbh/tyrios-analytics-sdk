@@ -2,11 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
+use repalogic\tyrios\analytics\data\WebEvents;
 use stdClass;
 
-class Refund extends BasicEvent
+class Refund extends WebEvents
 {
     protected string $currency;
     protected string $value;
@@ -34,13 +33,23 @@ class Refund extends BasicEvent
     {
         $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $refund_amount, $refund_quantity,$reject_reason, $tax, $items, $sessionId);
 
-        $object = new stdClass();
-
-        $this->extracted($currency, $object, $value, $tags, $userId, $coupon, $refund_amount, $refund_quantity,$reject_reason, $tax, $items, $sessionId);
+        $object["currency"] = $currency;
+        $object["value"] = $value;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["coupon"] = $coupon;
+        $object["refund_amount"] = $refund_amount;
+        $object["refund_quantity"] = $refund_quantity;
+        $object["reject_reason"] = $reject_reason;
+        $object["tax"] = $tax;
+        $object["items"] = $items;
+        $object["sessionId"] = $sessionId;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "refund", $object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "refund", $object);
     }
 
 

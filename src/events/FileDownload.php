@@ -2,17 +2,16 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
-use stdClass;
+use repalogic\tyrios\analytics\data\WebEvents;
 
-class FileDownload extends BasicEvent
+class FileDownload extends WebEvents
 {
     protected string $file_extension;
     protected string $file_name;
     protected array $tags;
-    protected string $userId;
-    protected string $sessionId;
+    protected ?string $userId;
+    protected ?string $sessionId;
     protected string $link_classes;
     protected string $link_domain;
     protected string $link_id;
@@ -36,21 +35,23 @@ class FileDownload extends BasicEvent
         $this->link_text = $link_text;
         $this->link_url = $link_url;
         $this->sessionId = $sessionId;
-        $object = new stdClass();
-        $object->file_extension = $file_extension;
-        $object->file_name = $file_name;
-        $object->tags = $tags;
-        $object->userId = $userId;
-        $object->sessionId = $sessionId;
-        $object->link_classes = $link_classes;
-        $object->link_domain = $link_domain;
-        $object->link_id = $link_id;
-        $object->link_text = $link_text;
-        $object->link_url = $link_url;
+
+        $object["file_extension"] = $file_extension;
+        $object["file_name"] = $file_name;
+        $object["tags"] = $tags;
+        $object["userId"] = $userId;
+        $object["sessionId"] = $sessionId;
+        $object["link_classes"] = $link_classes;
+        $object["link_domain"] = $link_domain;
+        $object["link_id"] = $link_id;
+        $object["link_text"] = $link_text;
+        $object["link_url"] = $link_url;
 
         $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = anonymizeIP($_SERVER['REMOTE_ADDR']) ?? null;
-        parent::__construct(date('Y-m-d H:i:s'), "ta_web", "file_download",$object,$userId,$sessionId,$tags,$browser_agent,$ip_address);
+        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+
+        parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
+                            date('Y-m-d H:i:s'), "ta_web", "file_download",$object);
     }
 
     public function toJsonStruct(): array
