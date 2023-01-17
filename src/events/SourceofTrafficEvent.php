@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class SourceofTrafficEvent extends WebEvents
+class SourceofTrafficEvent extends WebEvent
 {
     protected string $traffic_name;
     protected array $tags;

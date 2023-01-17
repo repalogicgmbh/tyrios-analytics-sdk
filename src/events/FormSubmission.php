@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class FormSubmission extends WebEvents
+class FormSubmission extends WebEvent
 {
     protected string $form_name;
     protected string $form_location;

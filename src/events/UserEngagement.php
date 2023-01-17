@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class UserEngagement extends WebEvents
+class UserEngagement extends WebEvent
 {
     protected string $engagement_time_msec;
     protected array $tags;

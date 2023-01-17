@@ -1,9 +1,9 @@
 <?php
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class Search extends WebEvents
+class Search extends WebEvent
 {
     protected string $search_term;
     protected bool $autosuggest;

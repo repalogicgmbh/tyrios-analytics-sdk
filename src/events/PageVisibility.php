@@ -3,9 +3,9 @@ namespace repalogic\tyrios\analytics\events;
 
 use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class PageVisibility extends WebEvents {
+class PageVisibility extends WebEvent {
 
 	private string $url;
 	private ?string $userId;

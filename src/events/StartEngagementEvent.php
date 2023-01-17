@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class StartEngagementEvent extends WebEvents
+class StartEngagementEvent extends WebEvent
 {
     protected string $section_name;
     protected string $section_start_time_msec;

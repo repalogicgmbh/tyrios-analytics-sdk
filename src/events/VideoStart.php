@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class VideoStart extends WebEvents
+class VideoStart extends WebEvent
 {
     protected string $video_duration;
     protected string $video_provider;

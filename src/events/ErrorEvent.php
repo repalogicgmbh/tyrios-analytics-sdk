@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class ErrorEvent extends WebEvents
+class ErrorEvent extends WebEvent
 {
     protected string $error_message;
     protected string $error_type;

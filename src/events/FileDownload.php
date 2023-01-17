@@ -3,9 +3,9 @@
 namespace repalogic\tyrios\analytics\events;
 
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class FileDownload extends WebEvents
+class FileDownload extends WebEvent
 {
     protected string $file_extension;
     protected string $file_name;

@@ -1,9 +1,9 @@
 <?php
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class SelectItemCategory extends WebEvents
+class SelectItemCategory extends WebEvent
 {
     protected string $category_name;
     protected string $category_id;

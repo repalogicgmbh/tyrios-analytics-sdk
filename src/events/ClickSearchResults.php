@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class ClickSearchResults extends WebEvents
+class ClickSearchResults extends WebEvent
 {
     protected string $search_term;
     protected string $search_query;

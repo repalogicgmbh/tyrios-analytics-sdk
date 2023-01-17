@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class BounceEvent extends WebEvents
+class BounceEvent extends WebEvent
 {
     protected string $bounce_pageName;
     protected array $tags;

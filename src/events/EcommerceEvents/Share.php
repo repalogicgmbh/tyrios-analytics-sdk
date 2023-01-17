@@ -1,9 +1,9 @@
 <?php
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class Share extends WebEvents
+class Share extends WebEvent
 {
     protected string $share_type;
     protected string $share_platform;

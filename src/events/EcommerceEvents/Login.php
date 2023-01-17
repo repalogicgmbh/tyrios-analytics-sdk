@@ -1,9 +1,9 @@
 <?php
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class Login extends WebEvents
+class Login extends WebEvent
 {
     protected string $method;
     protected string $value;

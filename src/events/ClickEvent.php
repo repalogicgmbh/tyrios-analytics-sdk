@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class ClickEvent extends WebEvents
+class ClickEvent extends WebEvent
 {
     protected string $click_name;
     protected string $click_type;

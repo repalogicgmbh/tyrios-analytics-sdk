@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class SelectPromotion extends WebEvents
+class SelectPromotion extends WebEvent
 {
     protected string $creative_name;
     protected string $creative_slot;

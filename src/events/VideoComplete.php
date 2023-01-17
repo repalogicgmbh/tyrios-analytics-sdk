@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class VideoComplete extends WebEvents
+class VideoComplete extends WebEvent
 {
     protected string $video_duration;
     protected array $tags;

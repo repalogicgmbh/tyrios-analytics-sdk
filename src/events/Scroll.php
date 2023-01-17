@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class Scroll extends WebEvents
+class Scroll extends WebEvent
 {
     protected string $section_name;
     protected array $tags;

@@ -1,9 +1,9 @@
 <?php
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class PageView extends WebEvents {
+class PageView extends WebEvent {
 
 	protected string $url;
 	protected array $tags;

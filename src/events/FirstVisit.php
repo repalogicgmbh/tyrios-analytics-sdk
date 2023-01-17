@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class FirstVisit extends WebEvents
+class FirstVisit extends WebEvent
 {
     protected string $ip_address;
     protected array $tags;

@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class ViewItemRatings extends WebEvents
+class ViewItemRatings extends WebEvent
 {
     protected string $item_name;
     protected string $item_id;

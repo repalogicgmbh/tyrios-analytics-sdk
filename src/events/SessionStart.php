@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class SessionStart extends WebEvents
+class SessionStart extends WebEvent
 {
     protected string $start_session_id;
     protected array $tags;

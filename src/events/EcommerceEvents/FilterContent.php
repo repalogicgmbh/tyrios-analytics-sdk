@@ -2,11 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\WebEvents;
-use stdClass;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class FilterContent extends WebEvents
+class FilterContent extends WebEvent
 {
     protected array $filters;
     protected ?string $userId;

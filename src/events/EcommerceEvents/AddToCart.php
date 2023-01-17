@@ -4,10 +4,10 @@ namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
 
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 use stdClass;
 
-class AddToCart extends WebEvents
+class AddToCart extends WebEvent
 {
     protected string $currency;
     protected string $value;

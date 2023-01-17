@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class AdClick extends WebEvents
+class AdClick extends WebEvent
 {
     protected string $ad_event_id;
     protected string $ad_location;

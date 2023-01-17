@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class FunctionsEvent extends WebEvents
+class FunctionsEvent extends WebEvent
 {
     protected string $function_name;
     protected string $function_value_selected;

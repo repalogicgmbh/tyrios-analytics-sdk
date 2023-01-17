@@ -2,10 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 use stdClass;
 
-class ViewPromotion extends WebEvents
+class ViewPromotion extends WebEvent
 {
     protected string $creative_name;
     protected string $promotion_id;

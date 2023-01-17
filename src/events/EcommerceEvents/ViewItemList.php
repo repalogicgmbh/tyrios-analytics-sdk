@@ -3,10 +3,10 @@
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 use stdClass;
 
-class ViewItemList extends WebEvents
+class ViewItemList extends WebEvent
 {
     protected string $item_list_id;
     protected string $item_list_name;

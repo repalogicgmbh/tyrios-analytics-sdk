@@ -2,9 +2,9 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 
-class NoItemsFound extends WebEvents
+class NoItemsFound extends WebEvent
 {
     protected string $item_search_name;
     protected array $item_filters;

@@ -2,10 +2,10 @@
 
 namespace repalogic\tyrios\analytics\events\EcommerceEvents;
 
-use repalogic\tyrios\analytics\data\WebEvents;
+use repalogic\tyrios\analytics\data\WebEvent;
 use stdClass;
 
-class Purchase extends WebEvents
+class Purchase extends WebEvent
 {
     protected string $currency;
     protected string $value;

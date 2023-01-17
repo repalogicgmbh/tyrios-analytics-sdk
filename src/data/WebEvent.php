@@ -1,7 +1,7 @@
 <?php
 namespace repalogic\tyrios\analytics\data;
 
-abstract class WebEvents extends BasicEvent
+abstract class WebEvent extends BasicEvent
 {
     protected ?string $userID;
     protected ?string $sessionID;
