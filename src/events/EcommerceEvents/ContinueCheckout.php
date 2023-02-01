@@ -9,18 +9,20 @@ class ContinueCheckout extends WebEvent
     protected string $currency;
     protected string $value;
     protected bool $purchase_made;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $currency, string $value,
-                                bool   $purchase_made,
-                                array  $tags = [],
-                                string $userId = "",
-                                string $sessionId = ""
-    )
-    {
-        $this->extracted($currency, $this, $value, $tags, $userId, $purchase_made, $sessionId);
+    public function __construct(string $currency,string $value,bool $purchase_made,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                ?string $userId = "",
+                                ?string $sessionId = ""
+    ){
+        $this->extracted($currency,$this,$value,$purchase_made,$tags,$userId,$sessionId,$browser_agent,$ip_address);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -29,14 +31,12 @@ class ContinueCheckout extends WebEvent
         $object["purchase_made"] = $purchase_made;
         $object["sessionId"] = $sessionId;
 
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
-
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "continue_checkout", $object);
     }
 
-    public function extracted(string $currency, object $object, string $value, ?array $tags, ?string $userId, bool $purchase_made, ?string $sessionId): void
+    public function extracted(string $currency,object $object,string $value,bool $purchase_made,?array $tags=[],?string $userId="",
+                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -44,6 +44,8 @@ class ContinueCheckout extends WebEvent
         $object->userId = $userId;
         $object->purchase_made = $purchase_made;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

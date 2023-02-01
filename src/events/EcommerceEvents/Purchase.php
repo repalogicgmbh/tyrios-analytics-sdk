@@ -16,20 +16,23 @@ class Purchase extends WebEvent
     protected ?float $tax;
     protected array $items;
     protected ?string $coupon;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $currency, string $value, string $payment_mode, float $price, int $quantity,array $items,
-                                float $shipping_cost = 0,
-                                float $tax = 0,string $coupon = "", array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
-    )
-    {
-        $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $items, $sessionId,
-            $payment_mode, $price, $quantity, $shipping_cost, $tax
-        );
+    public function __construct(string $currency,string $value,string $payment_mode,float $price,int $quantity,array $items,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?float $shipping_cost = 0,
+                                ?float $tax = 0,
+                                ?string $coupon = "",
+                                ?array $tags = [],
+                                ?string $userId = "",
+                                ?string $sessionId = "",
+    ){
+        $this->extracted($currency,$this,$value,$items,$payment_mode,$price,$quantity,$userId,$coupon,$tags,$sessionId,$shipping_cost,$tax,$browser_agent,$ip_address);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -43,9 +46,6 @@ class Purchase extends WebEvent
         $object["price"] = $price;
         $object["shipping_cost"] = $shipping_cost;
         $object["tax"] = $tax;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "purchase", $object);
@@ -61,11 +61,13 @@ class Purchase extends WebEvent
      * @param string|null $coupon
      * @param array $items
      * @param string|null $sessionId
+     * @param string|null $browser_agent
+     * @param string|null $ip_address
      * @return void
      */
-    public function extracted(string $currency, object $object, string $value,  $tags , ?string $userId, ?string $coupon, array $items, ?string $sessionId,
-                              string $payment_mode, float $price, int $quantity, ?float $shipping_cost, ?float $tax
-    ): void
+    public function extracted(string $currency,object $object,string $value,array $items,string $payment_mode,float $price,int $quantity,
+                              ?string $userId="",?string $coupon="",?array $tags=[],?string $sessionId="",?float $shipping_cost=0,
+                              ?float $tax=0,?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -79,6 +81,8 @@ class Purchase extends WebEvent
         $object->price = $price;
         $object->shipping_cost = $shipping_cost;
         $object->tax = $tax;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

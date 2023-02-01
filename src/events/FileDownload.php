@@ -9,7 +9,7 @@ class FileDownload extends WebEvent
 {
     protected string $file_extension;
     protected string $file_name;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
     protected string $link_classes;
@@ -17,14 +17,20 @@ class FileDownload extends WebEvent
     protected string $link_id;
     protected string $link_text;
     protected string $link_url;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $file_extension, string $file_name, string $link_classes = "",
-                                string $link_domain = "", string $link_id = "", string $link_text = "", string $link_url = "",
-                                array $tags = [],
+    public function __construct(string $file_extension,string $file_name,?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                string $link_classes = "",
+                                string $link_domain = "",
+                                string $link_id = "",
+                                string $link_text = "",
+                                string $link_url = "",
                                 string $userId="",
                                 string $sessionId=""
-    )
-    {
+    ){
         $this->file_extension = $file_extension;
         $this->file_name = $file_name;
         $this->tags = $tags;
@@ -35,6 +41,8 @@ class FileDownload extends WebEvent
         $this->link_text = $link_text;
         $this->link_url = $link_url;
         $this->sessionId = $sessionId;
+        $this->browser_agent = $browser_agent;
+        $this->ip_address = $ip_address;
 
         $object["file_extension"] = $file_extension;
         $object["file_name"] = $file_name;
@@ -46,9 +54,6 @@ class FileDownload extends WebEvent
         $object["link_id"] = $link_id;
         $object["link_text"] = $link_text;
         $object["link_url"] = $link_url;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "file_download",$object);
@@ -66,6 +71,8 @@ class FileDownload extends WebEvent
         $this->attributes["link_text"] = $this->link_text;
         $this->attributes["link_url"] = $this->link_url;
         $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
     }
 

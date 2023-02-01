@@ -13,7 +13,7 @@ class WebSiteVisit {
 	private BasicEvent $basicEvent;
 	private SystemInformation $sysInfo;
 	
-	public function __construct(string $userId,string $url, string $sourceOfVisit,string $timeOfVisit, SystemInformation $sysInfo) {
+	public function __construct(string $userId,string $url,string $sourceOfVisit,string $timeOfVisit,SystemInformation $sysInfo) {
 		$this->userId = $userId;
 		$this->url = $url;
 		$this->sourceOfVisit = $sourceOfVisit;
@@ -28,7 +28,6 @@ class WebSiteVisit {
 			"url"				=> $this->url,
 			"timeOfVisit"	    => $this->timeOfVisit,
 			"systemInformation" => $this->sysInfo->getSystemInfo()
-			
 		];			
 	}
 }

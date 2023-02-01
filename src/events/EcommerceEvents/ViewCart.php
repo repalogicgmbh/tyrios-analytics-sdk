@@ -13,17 +13,22 @@ class ViewCart extends WebEvent
     protected string $value;
     protected array $items;
     protected ?string $coupon;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-
-    public function __construct(string $currency, string $value, $items,string $coupon = "", array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
+    public function __construct(string $currency,string $value,array $items,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?string $coupon = "",
+                                ?array $tags = [],
+                                ?string $userId = "",
+                                ?string $sessionId = "",
     )
     {
-        $this->extracted($currency, $this, $value, $tags, $userId, $coupon,  $items, $sessionId);
+        $this->extracted($currency,$this,$value,$items,$userId,$coupon,$tags,$sessionId,$browser_agent,$ip_address);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -32,9 +37,6 @@ class ViewCart extends WebEvent
         $object["coupon"] = $coupon;
         $object["items"] = $items;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "view_cart", $object);
@@ -49,6 +51,8 @@ class ViewCart extends WebEvent
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
         $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
     }
 
@@ -63,7 +67,8 @@ class ViewCart extends WebEvent
      * @param string|null $sessionId
      * @return void
      */
-    public function extracted(string $currency, object $object, string $value, ?array $tags, ?string $userId, ?string $coupon, array $items, ?string $sessionId): void
+    public function extracted(string $currency,object $object,string $value,array $items,?string $userId="",?string $coupon="",
+                              ?array $tags=[],?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -72,6 +77,8 @@ class ViewCart extends WebEvent
         $object->coupon = $coupon;
         $object->items = $items;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

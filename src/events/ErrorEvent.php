@@ -10,12 +10,19 @@ class ErrorEvent extends WebEvent
     protected string $error_type;
     protected string $error_stacktrace;
     protected string $error_location;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $error_message, string $error_type, string $error_stacktrace,string $error_location, array $tags = [], string $userId = "", string $sessionId="")
-    {
+    public function __construct(string $error_message,string $error_type,string $error_stacktrace,string $error_location,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                string $userId = "",
+                                string $sessionId=""
+    ){
         $this->error_message = $error_message;
         $this->error_type = $error_type;
         $this->error_stacktrace = $error_stacktrace;
@@ -23,6 +30,8 @@ class ErrorEvent extends WebEvent
         $this->tags = $tags;
         $this->userId = $userId;
         $this->sessionId = $sessionId;
+        $this->browser_agent = $browser_agent;
+        $this->ip_address = $ip_address;
 
         $object["error_message"] = $error_message;
         $object["error_type"] = $error_type;
@@ -31,9 +40,6 @@ class ErrorEvent extends WebEvent
         $object["tags"] = $tags;
         $object["userId"] = $userId;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "error_event",$object);

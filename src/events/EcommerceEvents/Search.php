@@ -7,16 +7,20 @@ class Search extends WebEvent
 {
     protected string $search_term;
     protected bool $autosuggest;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $search_term, bool $autosuggest = false, array $tags = [],
+    public function __construct(string $search_term,?string $browser_agent = null,?string $ip_address = null,
+                                bool $autosuggest = false,
+                                ?array $tags = [],
                                 string $userId = "",
                                 string $sessionId = "",
     )
     {
-        $this->extracted($search_term, $this, $autosuggest, $tags, $userId,  $sessionId);
+        $this->extracted($search_term,$this,$autosuggest,$tags,$userId,$sessionId,$browser_agent,$ip_address);
 
         $object["search_term"] = $search_term;
         $object["autosuggest"] = $autosuggest;
@@ -24,19 +28,19 @@ class Search extends WebEvent
         $object["userId"] = $userId;
         $object["sessionId"] = $sessionId;
 
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
-
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "search", $object);
     }
 
-    public function extracted(string $search_term, object $object, bool $autosuggest, ?array $tags, ?string $userId,  ?string $sessionId): void
+    public function extracted(string $search_term,object $object,bool $autosuggest,?array $tags=[],?string $userId="",
+                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->search_term = $search_term;
         $object->autosuggest = $autosuggest;
         $object->tags = $tags;
         $object->userId = $userId;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 }

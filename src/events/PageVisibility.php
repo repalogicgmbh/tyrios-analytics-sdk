@@ -7,24 +7,34 @@ use repalogic\tyrios\analytics\data\WebEvent;
 
 class PageVisibility extends WebEvent {
 
-	private string $url;
-	private ?string $userId;
-	private string $pageTitle;
-	private string $visibilityStatus;
-	private string $visibilityTime;
-	private BasicEvent $basicEvent;
-	private SystemInformation $sysInfo;
-
-    protected array $tags;
+	protected string $url;
+    protected ?string $userId;
+    protected string $pageTitle;
+    protected string $visibilityStatus;
+    protected string $visibilityTime;
+    protected BasicEvent $basicEvent;
+    protected SystemInformation $sysInfo;
+    protected array|null $tags;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-	public function __construct(string $url,string $pageTitle, string $visibilityStatus,string $visibilityTime, SystemInformation $sysInfo,array $tags,string $userId="",string $sessionId="") {
-		$this->userId           = $userId;
-		$this->url 				= $url;
-		$this->pageTitle 		= $pageTitle;
+	public function __construct(string $url,string $pageTitle,string $visibilityStatus,string $visibilityTime,
+                                SystemInformation $sysInfo,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                string $userId="",
+                                string $sessionId=""
+    ){
+		$this->userId = $userId;
+		$this->url = $url;
+		$this->pageTitle = $pageTitle;
 		$this->visibilityStatus = $visibilityStatus;
-		$this->visibilityTime 	= $visibilityTime;
-		$this->sysInfo 		 	= $sysInfo;
+		$this->visibilityTime = $visibilityTime;
+		$this->sysInfo = $sysInfo;
+        $this->browser_agent = $browser_agent;
+        $this->ip_address = $ip_address;
 
         $object["pageTitle"] = $pageTitle;
         $object["url"] = $url;
@@ -33,9 +43,6 @@ class PageVisibility extends WebEvent {
         $object["visibilityStatus"] = $visibilityStatus;
         $object["visibilityTime"] = $visibilityTime;
         $object["sysInfo"] = $sysInfo;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "page_visibility",$object);
@@ -49,7 +56,9 @@ class PageVisibility extends WebEvent {
 			"url"				=> $this->url,
 			"visibilityStatus"	=> $this->visibilityStatus,
 			"visibilityTime"	=> $this->visibilityTime,
-			"systemInformation" => $this->sysInfo->getSystemInfo()
+			"systemInformation" => $this->sysInfo->getSystemInfo(),
+            "browser_agent"     => $this->browser_agent,
+            "ip_address"        => $this->ip_address
 		];	
 	}
 }

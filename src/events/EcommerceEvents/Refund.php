@@ -15,23 +15,26 @@ class Refund extends WebEvent
     protected int $refund_quantity;
     protected string $reject_reason;
     protected ?float $tax;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $currency, string $value,
-                                float $refund_amount,
-                                int $refund_quantity,
+    public function __construct(string $currency, string $value,float $refund_amount,int $refund_quantity,
                                 string $reject_reason,
                                 array $items,
-                                string $coupon = "",
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                ?string $coupon = "",
                                 ?float $tax = 0,
-                                array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
+                                ?string $userId = "",
+                                ?string $sessionId = "",
     )
     {
-        $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $refund_amount, $refund_quantity,$reject_reason, $tax, $items, $sessionId);
+        $this->extracted($currency,$this,$value,$items,$refund_amount,$refund_quantity,$reject_reason,$userId,$coupon,
+                        $tax,$tags,$sessionId,$browser_agent,$ip_address);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -44,9 +47,6 @@ class Refund extends WebEvent
         $object["tax"] = $tax;
         $object["items"] = $items;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "refund", $object);
@@ -65,9 +65,13 @@ class Refund extends WebEvent
      * @param string|null $tax
      * @param array $items
      * @param string|null $sessionId
+     * @param string|null $browser_agent
+     * @param string|null $ip_address
      * @return void
      */
-    public function extracted(string $currency, object $object, string $value, ?array $tags, ?string $userId, ?string $coupon, float $refund_amount, int $refund_quantity,string $reject_reason, ?float $tax,array $items, ?string $sessionId): void
+    public function extracted(string $currency,object $object,string $value,array $items,float $refund_amount,int $refund_quantity,
+                              string $reject_reason,?string $userId="",?string $coupon="",?float $tax=0,?array $tags=[],
+                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -80,6 +84,8 @@ class Refund extends WebEvent
         $object->tax = $tax;
         $object->items = $items;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 }
 

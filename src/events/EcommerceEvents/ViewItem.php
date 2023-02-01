@@ -11,17 +11,21 @@ class ViewItem extends WebEvent
     protected string $currency;
     protected string $value;
     protected Item $item;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-
-    public function __construct(string $currency, string $value, Item $item, array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
+    public function __construct(string $currency,string $value,Item $item,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                ?string $userId = "",
+                                ?string $sessionId = "",
     )
     {
-        $this->extracted($currency, $this, $value, $tags, $userId,  $item, $sessionId);
+        $this->extracted($currency,$this,$value,$item,$tags,$userId,$sessionId,$browser_agent,$ip_address);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -29,9 +33,6 @@ class ViewItem extends WebEvent
         $object["userId"] = $userId;
         $object["item"] = $item;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "view_item", $object);
@@ -45,6 +46,8 @@ class ViewItem extends WebEvent
         $this->attributes["tags"] = $this->tags;
         $this->attributes["item"] = $this->item;
         $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
     }
 
@@ -56,9 +59,12 @@ class ViewItem extends WebEvent
      * @param string|null $userId
      * @param Item $item
      * @param string|null $sessionId
+     * @param string|null $browser_agent
+     * @param string|null $ip_address
      * @return void
      */
-    public function extracted(string $currency, object $object, string $value, ?array $tags, ?string $userId,  Item $item, ?string $sessionId): void
+    public function extracted(string $currency,object $object,string $value,Item $item,?array $tags=[],?string $userId="",
+                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -66,6 +72,8 @@ class ViewItem extends WebEvent
         $object->userId = $userId;
         $object->item = $item;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

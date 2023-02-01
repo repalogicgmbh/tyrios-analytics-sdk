@@ -6,42 +6,46 @@ use repalogic\tyrios\analytics\data\WebEvent;
 
 class ServiceUsedEvent extends WebEvent {
 
-	private string $app;
-	private string $functionality;
-	private $project;
-	protected array $tags ;
-
+    protected string $app;
+    protected string $functionality;
+    protected string $project;
+	protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-	public function __construct(string $app,string $functionality,$project,array $tags =[],string $sessionId="",string $userId=""){
-        $this->app 			 = $app;
-		$this->functionality = $functionality;
-		$this->project 		 = $project;
-		$this->tags 		 = $tags;
-
+	public function __construct(string $app,string $functionality,string $project,?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                string $sessionId = "",
+                                string $userId = ""
+    ){
+        $this->app = $app;
+        $this->functionality = $functionality;
+        $this->project = $project;
+        $this->tags = $tags;
         $this->userId = $userId;
         $this->sessionId = $sessionId;
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
+        $this->browser_agent = $browser_agent;
+        $this->ip_address = $ip_address;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date("Y-m-d\TH:i:s\Z"), "Click", "Module",null);
+                            date('Y-m-d H:i:s'), "Click", "Module",null);
 
     }
 	
 	public function toJsonStruct() :? array {
-		
-		$systemInfo = new SystemInformation();
 		$this->attributes = [
-				"app" 				=> $this->app,
-				"functionality"  	=> $this->functionality,
-				"project"	 		=> $this->project,
-				"tags"				=> $this->tags,
- 				"systemInformation" => SystemInformation::getSystemInfo()		
+            "app" 				=> $this->app,
+            "functionality"  	=> $this->functionality,
+            "project"	 		=> $this->project,
+            "tags"				=> $this->tags,
+            "systemInformation" => SystemInformation::getSystemInfo(),
+            "browser_agent"     => $this->browser_agent,
+            "ip_address"        => $this->ip_address
 		];
-
-		return  parent::toJsonStruct();	
+		return  parent::toJsonStruct();
 	}
 }
 

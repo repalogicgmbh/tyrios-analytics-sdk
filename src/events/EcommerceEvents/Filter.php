@@ -8,11 +8,9 @@ class Filter
     public string $filter_value;
 
     /**
-     * @param $filter_name
-
-     * @param $tags
-
-     * @param $filter_value
+     * @param string $filter_name
+     * @param string $filter_value
+     * @param ?array $tags
      */
     public function __construct(string $filter_name, string $filter_value,array $tags = [])
     {

@@ -12,17 +12,20 @@ class ViewItemList extends WebEvent
     protected string $item_list_name;
     protected array $items;
     protected string $item_list_category;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-
-    public function __construct(string $item_list_id, string $item_list_name,array $items,string $item_list_category, array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
-    )
-    {
-        $this->extracted($item_list_id, $this, $item_list_name, $tags, $userId,  $item_list_category, $items, $sessionId);
+    public function __construct(string $item_list_id, string $item_list_name,array $items,string $item_list_category,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                ?string $userId = "",
+                                ?string $sessionId = "",
+    ){
+        $this->extracted($item_list_id,$this,$item_list_name,$item_list_category,$items,$tags,$userId,$sessionId,$browser_agent,$ip_address);
 
         $object["item_list_id"] = $item_list_id;
         $object["item_list_name"] = $item_list_name;
@@ -31,9 +34,6 @@ class ViewItemList extends WebEvent
         $object["item_list_category"] = $item_list_category;
         $object["items"] = $items;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object);
@@ -48,6 +48,8 @@ class ViewItemList extends WebEvent
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
         $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
     }
 
@@ -62,7 +64,8 @@ class ViewItemList extends WebEvent
      * @param string|null $sessionId
      * @return void
      */
-    public function extracted(string $item_list_id, object $object, string $item_list_name, ?array $tags, ?string $userId,  string $item_list_category, array $items, ?string $sessionId): void
+    public function extracted(string $item_list_id,object $object,string $item_list_name,string $item_list_category,array $items,
+                              ?array $tags=[],?string $userId="",?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->item_list_id = $item_list_id;
         $object->item_list_name = $item_list_name;
@@ -71,6 +74,8 @@ class ViewItemList extends WebEvent
         $object->item_list_category = $item_list_category;
         $object->items = $items;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

@@ -12,19 +12,21 @@ class VideoProgress extends WebEvent
     protected string $video_provider;
     protected string $video_title;
     protected string $video_url;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $video_duration,
-                                string $video_provider,
-                                string $video_passed,
-                                string $video_current_time,
+    public function __construct(string $video_duration,string $video_provider,string $video_passed,string $video_current_time,
                                 string $video_title,
                                 string $video_url,
-                                array $tags = [], string $userId = "", string $sessionId = ""
-    )
-    {
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                string $userId = "",
+                                string $sessionId = ""
+    ){
         $this->video_duration = $video_duration;
         $this->video_passed = $video_passed;
         $this->video_current_time = $video_current_time;
@@ -34,6 +36,8 @@ class VideoProgress extends WebEvent
         $this->tags = $tags;
         $this->userId = $userId;
         $this->sessionId = $sessionId;
+        $this->browser_agent = $browser_agent;
+        $this->ip_address = $ip_address;
 
         $object["video_duration"] = $video_duration;
         $object["video_passed"] = $video_passed;
@@ -44,9 +48,6 @@ class VideoProgress extends WebEvent
         $object["tags"] = $tags;
         $object["userId"] = $userId;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "video_progress",$object);

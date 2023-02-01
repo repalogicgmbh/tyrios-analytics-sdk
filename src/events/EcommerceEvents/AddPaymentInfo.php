@@ -13,17 +13,22 @@ class AddPaymentInfo extends WebEvent
     protected array $items;
     protected ?string $coupon;
     protected string $payment_type;
-    protected array $tags;
+    protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
+    protected string|null $browser_agent;
+    protected string|null $ip_address;
 
-    public function __construct(string $currency, string $value,array $items,string $payment_type,string $coupon = "",
-                                array $tags = [],
-                                string $userId = "",
-                                string $sessionId = "",
-    )
-    {
-        $this->extracted($currency, $this, $value, $tags, $userId, $coupon, $payment_type, $items, $sessionId);
+    public function __construct(string $currency, string $value,array $items,string $payment_type,
+                                ?string $browser_agent = null,
+                                ?string $ip_address = null,
+                                ?array $tags = [],
+                                ?string $coupon = "",
+                                ?string $userId = "",
+                                ?string $sessionId = "",
+    ){
+
+        $this->extracted($currency,$this,$value,$payment_type,$items,$coupon,$sessionId,$browser_agent,$ip_address,$tags,$userId);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -33,9 +38,6 @@ class AddPaymentInfo extends WebEvent
         $object["payment_type"] = $payment_type;
         $object["items"] = $items;
         $object["sessionId"] = $sessionId;
-
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
-        $ip_address = parent::anonymize_ip($_SERVER['REMOTE_ADDR']) ?? null;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "add_payment_info",$object);
@@ -51,6 +53,9 @@ class AddPaymentInfo extends WebEvent
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
         $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
+
         return parent::toJsonStruct();
     }
 
@@ -64,9 +69,12 @@ class AddPaymentInfo extends WebEvent
      * @param string $payment_type
      * @param array $items
      * @param string|null $sessionId
+     * @param string|null $browser_agent
+     * @param string|null $ip_address
      * @return void
      */
-    public function extracted(string $currency, object $object, string $value, ?array $tags, ?string $userId, ?string $coupon, string $payment_type, array $items, ?string $sessionId): void
+    public function extracted(string $currency,object $object,string $value,string $payment_type, array $items,?string $coupon="",
+                              ?string $sessionId="",?string $browser_agent="",?string $ip_address="",?array $tags=[],?string $userId=""): void
     {
         $object->currency = $currency;
         $object->value = $value;
@@ -76,6 +84,8 @@ class AddPaymentInfo extends WebEvent
         $object->payment_type = $payment_type;
         $object->items = $items;
         $object->sessionId = $sessionId;
+        $object->browser_agent = $browser_agent;
+        $object->ip_address = $ip_address;
     }
 
 }

@@ -6,31 +6,39 @@ use repalogic\tyrios\analytics\data\WebEvent;
 class PageView extends WebEvent {
 
 	protected string $url;
-	protected array $tags;
+	protected array|null $tags;
 	protected ?string $userId;
 	protected ?string $sessionId;
 	protected string $pageTitle;
-	protected string $ip_address;
-	protected ?string $previous_page;
+	protected string|null $ip_address;
+	protected string|null $previous_page;
+    protected string|null $browser_agent;
 
-	public function __construct(string $url, string $pageTitle,  string $ip_address = "",string $previous_page = "",array $tags=[],string $userId = "", string $sessionId = ""){
-		$this->userId 		= $userId;
-		$this->sessionId 		= $sessionId;
-        $this->previous_page = $previous_page;
+	public function __construct(string $url,string $pageTitle,?string $ip_address = null,
+                                ?string $browser_agent = null,
+                                ?string $previous_page = null,
+                                ?array $tags = [],
+                                string $userId = "",
+                                string $sessionId = ""
+    ){
         $this->tags = $tags;
-		$this->url 			= $url;
-		$this->pageTitle 	= $pageTitle;
-		$this->ip_address 	= $ip_address;
+        $this->url 	= $url;
+        $this->userId = $userId;
+        $this->sessionId = $sessionId;
+        $this->pageTitle = $pageTitle;
+        $this->ip_address = $ip_address;
+        $this->previous_page = $previous_page;
+        $this->browser_agent = $browser_agent;
 
-        $object["pageTitle"] = $pageTitle;
-        $object["url"] = $url;
+        $object["url"]  = $url;
         $object["tags"] = $tags;
-        $object["userId"] 		= $userId;
-        $object["sessionId"] 		= $sessionId;
+        $object["pageTitle"] = $pageTitle;
+        $object["userId"] 	 = $userId;
+        $object["sessionId"] = $sessionId;
         $object["ip_address"] = $ip_address;
         $object["previous_page"] = $previous_page;
+        $object["browser_agent"] = $browser_agent;
 
-        $browser_agent = $_SERVER['HTTP_USER_AGENT'] ?? null;
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object);
     }
