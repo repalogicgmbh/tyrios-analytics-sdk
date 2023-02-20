@@ -15,4 +15,12 @@ class BasicEvent {
 		$this->dateTime 	= $dateTime;
 		$this->attributes 	= $attributes;
 	}
+
+    public function toJsonStruct():array {
+        return [
+            "dateTime" => $this->dateTime,
+            "eventType" => $this->eventType,
+            "eventName" => $this->eventName,
+            "attributes" => $this->attributes];
+    }
 }

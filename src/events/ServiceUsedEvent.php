@@ -34,8 +34,8 @@ class ServiceUsedEvent extends WebEvent {
                             date('Y-m-d H:i:s'), "Click", "Module",null);
 
     }
-	
-	public function toJsonStruct() :? array {
+
+	public function toJsonStruct() :array {
 		$this->attributes = [
             "app" 				=> $this->app,
             "functionality"  	=> $this->functionality,

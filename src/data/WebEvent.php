@@ -31,14 +31,13 @@ abstract class WebEvent extends BasicEvent
         parent::__construct($dateTime, $eventType, $eventName, $attributes);
     }
 
-    public function toJsonStruct() :? array {
+    public function toJsonStruct():array {
 
-        return [
-            "userID"    => $this->userID,
-            "sessionID" => $this->sessionID,
-            "tags"      => $this->tags,
-            "browser_agent" => $this->browser_agent,
-            "ip_address"    => $this->ip_address
-        ];
+        $this->attributes["userID"] = $this->userID;
+        $this->attributes["sessionID"] = $this->sessionID;
+        $this->attributes["tags"] = $this->tags;
+        $this->attributes["browser_agent"] = $this->browser_agent;
+        $this->attributes["ip_address"] = $this->ip_address;
+        return parent::toJsonStruct();
     }
 }

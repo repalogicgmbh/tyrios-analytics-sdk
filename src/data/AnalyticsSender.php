@@ -12,8 +12,9 @@ class AnalyticsSender
     private $branch;
     private $postCode;
     private $countryCode;
+    private $debugMode = false;
 
-    public function __construct($user, $password,$branch,$postCode,$countryCode)
+    public function __construct($user, $password,$branch,$postCode,$countryCode,$debugMode = false  )
     {
         $this->user = $user;
         $this->password = $password;
@@ -21,44 +22,63 @@ class AnalyticsSender
         $this->postCode = $postCode;
         $this->countryCode = $countryCode;
         $this->userAgent = $_SERVER['HTTP_USER_AGENT'] ?? null;
+        $this->debugMode = $debugMode;
     }
 
     public function sendEvents($basicEvents)
     {
-        $endpoint = 'https://analytics.tyrios.io/addEvent';
+        $endpoint = 'https://analytics.tyrios.io/addEventAsync';
         $object = new stdClass();
         $location = new stdClass();
         $location->postCode = $this->postCode;
         $location->countryCode = $this->countryCode;
         $object->events = array_map(function ($each) use ($location) {
-
-            $each->userAgent = $this->userAgent;
             $each->branch = $this->branch;
             $each->location = $location;
-            return $each;
+            return $each->toJsonStruct();
         }, $basicEvents);
 
-        $postData = $object;
+        $postData = json_encode($object,$this->debugMode?JSON_PRETTY_PRINT:0);
 
         $endpointParts = parse_url($endpoint);
         $endpointParts['path'] = $endpointParts['path'] ?? '/';
         $endpointParts['port'] = $endpointParts['port'] ?? $endpointParts['scheme'] === 'https' ? 443 : 80;
 
-        $contentLength = count((array)$postData);
+        $contentLength = strlen($postData);
 
         $request = "POST {$endpointParts['path']} HTTP/1.1\r\n";
         $request .= "Host: {$endpointParts['host']}\r\n";
-        $request .= "User-Agent: My application v2.2.0\r\n";
-        $request .= "Authorization: Bearer api_key\r\n";
+        $request .= "Authorization: Basic ".base64_encode($this->user.":".$this->password)."\r\n";
         $request .= "Content-Length: {$contentLength}\r\n";
+        $request .= "Connection: close\r\n";
         $request .= "Content-Type: application/json\r\n\r\n";
-        $request .= json_encode($postData);
+
+        $request .= $postData;
 
         $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
 
         $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
-        echo $request;
         fwrite($socket, $request);
+
+        if ($this->debugMode) {
+            echo '<pre>';
+            echo "Request:\r\n";
+            echo $request;
+            while ($line = fgets($socket)) {
+                $line = trim($line);
+                if ($line == '') {
+                    break;
+                }
+            }
+            $output = '';
+            // Read the body of the response
+            while ($line = fgets($socket)) {
+                $output .= $line;
+            }
+            echo "Response:\r\n";
+            echo $output;
+            echo '</pre>';
+        }
         fclose($socket);
 
     }

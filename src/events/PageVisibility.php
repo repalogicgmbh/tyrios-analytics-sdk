@@ -48,17 +48,15 @@ class PageVisibility extends WebEvent {
                             date('Y-m-d H:i:s'), "ta_web", "page_visibility",$object);
 
     }
-	
-	public function toJsonStruct() :? array{
+
+	public function toJsonStruct() : array{
 		return [
 			"userId"			=> $this->userId,
 			"pageTitle"			=> $this->pageTitle,
 			"url"				=> $this->url,
 			"visibilityStatus"	=> $this->visibilityStatus,
 			"visibilityTime"	=> $this->visibilityTime,
-			"systemInformation" => $this->sysInfo->getSystemInfo(),
-            "browser_agent"     => $this->browser_agent,
-            "ip_address"        => $this->ip_address
+			"systemInformation" => $this->sysInfo->getSystemInfo()
 		];	
 	}
 }
