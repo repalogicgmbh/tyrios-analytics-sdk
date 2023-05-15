@@ -28,7 +28,7 @@ class ClickEvent extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "click_event", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "click_event", $object);
     }
     public function extracted(object $object,string $click_name,string $click_type,?array $tags=[],?string $userId="",
                               ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void

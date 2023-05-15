@@ -9,14 +9,14 @@ class FileDownload extends WebEvent
 {
     protected string $file_extension;
     protected string $file_name;
+    protected ?string $link_classes;
+    protected ?string $link_domain;
+    protected ?string $link_id;
+    protected ?string $link_text;
+    protected ?string $link_url;
     protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
-    protected string $link_classes;
-    protected string $link_domain;
-    protected string $link_id;
-    protected string $link_text;
-    protected string $link_url;
     protected string|null $browser_agent;
     protected string|null $ip_address;
 
@@ -56,7 +56,7 @@ class FileDownload extends WebEvent
         $object["link_url"] = $link_url;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "file_download",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "file_download",$object);
     }
 
     public function toJsonStruct(): array
@@ -70,7 +70,7 @@ class FileDownload extends WebEvent
         $this->attributes["link_id"] = $this->link_id;
         $this->attributes["link_text"] = $this->link_text;
         $this->attributes["link_url"] = $this->link_url;
-        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();

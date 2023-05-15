@@ -36,7 +36,7 @@ class ViewItemList extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "view_item_list", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "view_item_list", $object);
     }
 
     public function toJsonStruct(): array
@@ -47,7 +47,7 @@ class ViewItemList extends WebEvent
         $this->attributes["item_list_category"] = $this->item_list_category;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
-        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();

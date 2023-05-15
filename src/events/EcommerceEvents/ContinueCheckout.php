@@ -32,7 +32,7 @@ class ContinueCheckout extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "continue_checkout", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "continue_checkout", $object);
     }
 
     public function extracted(string $currency,object $object,string $value,bool $purchase_made,?array $tags=[],?string $userId="",

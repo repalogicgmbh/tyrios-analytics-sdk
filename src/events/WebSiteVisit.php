@@ -3,9 +3,8 @@ namespace repalogic\tyrios\analytics\events;
 
 use repalogic\tyrios\analytics\data\BasicEvent;
 use repalogic\tyrios\analytics\data\SystemInformation;
-use repalogic\tyrios\analytics\data\WebEvent;
 
-class WebSiteVisit extends WebEvent {
+class WebSiteVisit {
 
 	private string $url;
 	private string $userId;
@@ -22,7 +21,7 @@ class WebSiteVisit extends WebEvent {
 		$this->sysInfo = $sysInfo;
 	}
 
-	public function toJsonStruct() :? array {
+	public function toJsonStruct() : array {
 		return [
 			"userId"			=> $this->userId,
 			"sourceOfVisit"		=> $this->sourceOfVisit,

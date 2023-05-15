@@ -40,7 +40,7 @@ class PageView extends WebEvent {
         $object["browser_agent"] = $browser_agent;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "pageView" ,$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "page_view" ,$object);
     }
 
 }

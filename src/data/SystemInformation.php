@@ -6,7 +6,7 @@ class SystemInformation {
 
 	public static function getSystemInfo() {
 		//$browser = new BrowserDetection();
-		$useragent = $_SERVER["HTTP_USER_AGENT"];
+		$useragent = $_SERVER["HTTP_USER_AGENT"] ?? null;
         //return $browser->getAll($useragent);
         return $useragent;
 	}

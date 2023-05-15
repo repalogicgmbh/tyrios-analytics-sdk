@@ -39,7 +39,7 @@ class ViewCart extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "view_cart", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "view_cart", $object);
     }
 
     public function toJsonStruct(): array
@@ -50,7 +50,7 @@ class ViewCart extends WebEvent
         $this->attributes["coupon"] = $this->coupon;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
-        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
+//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();

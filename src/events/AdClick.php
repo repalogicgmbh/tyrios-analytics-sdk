@@ -32,7 +32,7 @@ class AdClick extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "ad_click", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "ad_click", $object);
     }
 
     public function extracted(object $object,string $ad_event_id,string $ad_location,string $ad_url,?array $tags=[],

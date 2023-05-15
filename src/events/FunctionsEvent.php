@@ -7,7 +7,7 @@ use repalogic\tyrios\analytics\data\WebEvent;
 class FunctionsEvent extends WebEvent
 {
     protected string $function_name;
-    protected string $function_value_selected;
+    protected ?string $function_value_selected;
     protected string $function_location_url;
     protected string $function_location;
     protected array|null $tags;
@@ -16,8 +16,8 @@ class FunctionsEvent extends WebEvent
     protected string|null $browser_agent;
     protected string|null $ip_address;
 
-    public function __construct(string $function_name,string $function_value_selected,string $function_location_url,
-                                string $function_location,
+    public function __construct(string $function_name,string $function_location_url,string $function_location,
+                                ?string $function_value_selected="",
                                 ?string $browser_agent=null,
                                 ?string $ip_address=null,
                                 ?array $tags=[],
@@ -43,7 +43,7 @@ class FunctionsEvent extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "functions_event",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "functions_event",$object);
     }
 }
 

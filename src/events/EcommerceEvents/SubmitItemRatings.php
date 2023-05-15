@@ -33,7 +33,7 @@ class SubmitItemRatings extends WebEvent
         $object["tags"] = $tags;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "submit_item_ratings", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "submit_item_ratings", $object);
     }
 
     public function extracted(object $object,string $item_name,string $item_id,string $rating,?array $tags=[],?string $userId="",

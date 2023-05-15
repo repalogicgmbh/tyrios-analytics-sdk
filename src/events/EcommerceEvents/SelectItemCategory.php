@@ -8,7 +8,7 @@ class SelectItemCategory extends WebEvent
     protected string $category_name;
     protected string $category_id;
     protected ?string $sub_category_name;
-    protected string $sub_category_id;
+    protected ?string $sub_category_id;
     protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
@@ -19,7 +19,7 @@ class SelectItemCategory extends WebEvent
                                 ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $sub_category_name = "",
-                                string $sub_category_id = "",
+                                ?string $sub_category_id = "",
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     )
@@ -35,10 +35,10 @@ class SelectItemCategory extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "select_item_category",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "select_item_category",$object);
     }
 
-    public function extracted(string $category_name,object $object,string $category_id,string $sub_category_name,string $sub_category_id,
+    public function extracted(string $category_name,object $object,string $category_id,?string $sub_category_name="",?string $sub_category_id="",
                               ?array $tags=[],?string $userId="",?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->category_name = $category_name;

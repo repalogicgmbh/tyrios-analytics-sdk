@@ -33,7 +33,7 @@ class Share extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "share", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "share", $object);
     }
 
     public function extracted(string $share_type,object $object,string $share_platform,string $share_item_id,string $share_item_name,

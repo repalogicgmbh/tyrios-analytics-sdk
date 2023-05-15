@@ -31,7 +31,7 @@ class ServiceUsedEvent extends WebEvent {
         $this->ip_address = $ip_address;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "Click", "Module",null);
+                            date('Y-m-d\TH:i:s'), "Click", "Module",null);
 
     }
 
@@ -41,7 +41,7 @@ class ServiceUsedEvent extends WebEvent {
             "functionality"  	=> $this->functionality,
             "project"	 		=> $this->project,
             "tags"				=> $this->tags,
-            "systemInformation" => SystemInformation::getSystemInfo(),
+//            "systemInformation" => SystemInformation::getSystemInfo(),
             "browser_agent"     => $this->browser_agent,
             "ip_address"        => $this->ip_address
 		];

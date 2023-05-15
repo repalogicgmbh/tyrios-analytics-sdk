@@ -7,7 +7,7 @@ use repalogic\tyrios\analytics\data\WebEvent;
 class NoItemsFound extends WebEvent
 {
     protected string $item_search_name;
-    protected array $item_filters;
+    protected array|null $item_filters;
     protected ?string $userId;
     protected ?string $sessionId;
     protected array|null $tags;
@@ -30,10 +30,10 @@ class NoItemsFound extends WebEvent
         $object["tags"] = $tags;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "no_items_found", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "no_items_found", $object);
     }
 
-    public function extracted(object $object,string $item_search_name,array $item_filters,?array $tags=[],?string $userId="",
+    public function extracted(object $object,string $item_search_name,?array $item_filters,?array $tags=[],?string $userId="",
                               ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
     {
         $object->item_search_name = $item_search_name;

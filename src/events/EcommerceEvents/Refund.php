@@ -49,7 +49,7 @@ class Refund extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "refund", $object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "refund", $object);
     }
 
 

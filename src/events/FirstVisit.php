@@ -26,7 +26,7 @@ class FirstVisit extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "first_visit",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "first_visit",$object);
     }
     public function extracted(object $object,string $traffic_name,?string $ip_address=null,?array $tags=[],?string $userId="",
                               ?string $sessionId="",?string $browser_agent=null): void

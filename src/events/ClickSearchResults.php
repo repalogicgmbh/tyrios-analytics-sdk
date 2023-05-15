@@ -7,7 +7,7 @@ use repalogic\tyrios\analytics\data\WebEvent;
 class ClickSearchResults extends WebEvent
 {
     protected string $search_term;
-    protected string $search_query;
+    protected ?string $search_query;
     protected ?string $search_type;
     protected array|null $tags;
     protected ?string $sessionId;
@@ -15,7 +15,7 @@ class ClickSearchResults extends WebEvent
     protected string|null $browser_agent;
     protected string|null $ip_address;
 
-    public function __construct(string $search_term,string $search_query,?string $browser_agent=null,?string $ip_address=null,
+    public function __construct(string $search_term,?string $search_query="",?string $browser_agent=null,?string $ip_address=null,
                                 ?array $tags=[],
                                 string $search_type ="",
                                 string $sessionId ="",
@@ -37,7 +37,7 @@ class ClickSearchResults extends WebEvent
         $object["userId"] = $userId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "click_search_results",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "click_search_results",$object);
     }
 }
 

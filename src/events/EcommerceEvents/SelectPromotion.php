@@ -37,7 +37,7 @@ class SelectPromotion extends WebEvent
         $object["sessionId"] = $sessionId;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                        date('Y-m-d H:i:s'), "ta_web", "select_promotion",$object);
+                        date('Y-m-d\TH:i:s'), "ta_web", "select_promotion",$object);
     }
 
     public function extracted(string $creative_name,object $object,string $creative_slot,string $promotion_id,string $promotion_name,

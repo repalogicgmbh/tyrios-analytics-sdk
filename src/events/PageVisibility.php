@@ -12,8 +12,6 @@ class PageVisibility extends WebEvent {
     protected string $pageTitle;
     protected string $visibilityStatus;
     protected string $visibilityTime;
-    protected BasicEvent $basicEvent;
-    protected SystemInformation $sysInfo;
     protected array|null $tags;
     protected ?string $sessionId;
     protected string|null $browser_agent;
@@ -45,7 +43,7 @@ class PageVisibility extends WebEvent {
         $object["sysInfo"] = $sysInfo;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
-                            date('Y-m-d H:i:s'), "ta_web", "page_visibility",$object);
+                            date('Y-m-d\TH:i:s'), "ta_web", "page_visibility",$object);
 
     }
 
@@ -56,7 +54,9 @@ class PageVisibility extends WebEvent {
 			"url"				=> $this->url,
 			"visibilityStatus"	=> $this->visibilityStatus,
 			"visibilityTime"	=> $this->visibilityTime,
-			"systemInformation" => $this->sysInfo->getSystemInfo()
-		];	
+//			"systemInformation" => $this->sysInfo->getSystemInfo(),
+            "browser_agent"     => $this->browser_agent,
+            "ip_address"        => $this->ip_address
+		];
 	}
 }

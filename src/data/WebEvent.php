@@ -4,13 +4,13 @@ namespace repalogic\tyrios\analytics\data;
 abstract class WebEvent extends BasicEvent
 {
     use BasicTrait;
-    protected ?string $userID;
-    protected ?string $sessionID;
+    protected ?string $userId;
+    protected ?string $sessionId;
     protected array|null $tags;
     protected string|null $browser_agent;
     protected string|null $ip_address;
 
-    public function __construct(?string $userID,?string $sessionID,?array $tags,?string $browser_agent,?string $ip_address,
+    public function __construct(?string $userId,?string $sessionId,?array $tags,?string $browser_agent,?string $ip_address,
                                 string $dateTime,string $eventType,string $eventName,?array $attributes)
     {
         if(!$browser_agent){
@@ -22,8 +22,12 @@ abstract class WebEvent extends BasicEvent
             }
         }
 
-        $this->userID = $userID;
-        $this->sessionID = $sessionID;
+        if($tags === null){
+            $tags = [];
+        }
+
+        $this->userId = $userId;
+        $this->sessionId = $sessionId;
         $this->tags = $tags;
         $this->browser_agent = $browser_agent;
         $this->ip_address = $ip_address;
@@ -33,8 +37,8 @@ abstract class WebEvent extends BasicEvent
 
     public function toJsonStruct():array {
 
-        $this->attributes["userID"] = $this->userID;
-        $this->attributes["sessionID"] = $this->sessionID;
+        $this->attributes["userId"] = $this->userId;
+        $this->attributes["sessionId"] = $this->sessionId;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
