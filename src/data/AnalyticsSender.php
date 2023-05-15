@@ -25,17 +25,79 @@ class AnalyticsSender
         $this->debugMode = $debugMode;
     }
 
-    public function sendEvents($basicEvents)
+    public function sendEventsAsync($basicEvents,$success_callback_url,$failure_callback_url,$environment_type)
     {
-        $endpoint = 'https://analytics.tyrios.io/addEventAsync';
+        if($environment_type === 'Sandbox'){
+            $endpoint = "https://analytics-test.tyrios.dev/addEventAsync";
+        }elseif ($environment_type === 'Live'){
+            $endpoint = 'https://analytics.tyrios.io/addEventAsync';
+        }
         $object = new stdClass();
         $location = new stdClass();
         $location->postCode = $this->postCode;
         $location->countryCode = $this->countryCode;
+
+        $object->success_callback_url = $success_callback_url;
+
         $object->events = array_map(function ($each) use ($location) {
-            $each->branch = $this->branch;
-            $each->location = $location;
-            return $each->toJsonStruct();
+            $each = $each->toJsonStruct();
+            $each["branch"] = $this->branch;
+            $each["location"] = $location;
+            return $each;
+        }, $basicEvents);
+
+        $events_json = json_encode($object->events);
+        $failure_token = md5(serialize(json_decode($events_json,true)));
+        $object->failure_callback_url = $failure_callback_url.$failure_token;
+
+        $postData = json_encode($object,$this->debugMode?JSON_PRETTY_PRINT:0);
+
+        $endpointParts = parse_url($endpoint);
+        $endpointParts['path'] = $endpointParts['path'] ?? '/';
+        $endpointParts['port'] = $endpointParts['port'] ?? $endpointParts['scheme'] === 'https' ? 443 : 80;
+
+        $contentLength = strlen($postData);
+
+        $request = "POST {$endpointParts['path']} HTTP/1.1\r\n";
+        $request .= "Host: {$endpointParts['host']}\r\n";
+        $request .= "Authorization: Basic ".base64_encode($this->user.":".$this->password)."\r\n";
+        $request .= "Content-Length: {$contentLength}\r\n";
+        $request .= "Connection: close\r\n";
+        $request .= "Content-Type: application/json\r\n\r\n";
+
+        $request .= $postData;
+
+        $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
+
+        $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
+        fwrite($socket, $request);
+
+        $response = '';
+        while (!feof($socket)) {
+            $response .= fgets($socket);
+        }
+
+        fclose($socket);
+
+    }
+    public function sendEventsSync($basicEvents,$environment_type)
+    {
+        if($environment_type === 'Sandbox'){
+            $endpoint = 'https://analytics-test.tyrios.dev/addEventSync';
+        }elseif ($environment_type === 'Live'){
+            $endpoint = "https://analytics.tyrios.io/addEventSync";
+        }
+
+        $object = new stdClass();
+        $location = new stdClass();
+        $location->postCode = $this->postCode;
+        $location->countryCode = $this->countryCode;
+
+        $object->events = array_map(function ($each) use ($location) {
+            $each = $each->toJsonStruct();
+            $each["branch"] = $this->branch;
+            $each["location"] = $location;
+            return $each;
         }, $basicEvents);
 
         $postData = json_encode($object,$this->debugMode?JSON_PRETTY_PRINT:0);
