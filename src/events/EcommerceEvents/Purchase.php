@@ -20,11 +20,11 @@ class Purchase extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $currency,string $value,string $payment_mode,float $price,int $quantity,array $items,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?float $shipping_cost = 0,
                                 ?float $tax = 0,
                                 ?string $coupon = "",
@@ -32,7 +32,7 @@ class Purchase extends WebEvent
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     ){
-        $this->extracted($currency,$this,$value,$items,$payment_mode,$price,$quantity,$userId,$coupon,$tags,$sessionId,$shipping_cost,$tax,$browser_agent,$ip_address);
+        $this->extracted($currency,$this,$value,$items,$payment_mode,$price,$quantity,$ip_address,$browser_agent,$userId,$coupon,$tags,$sessionId,$shipping_cost,$tax);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -62,12 +62,12 @@ class Purchase extends WebEvent
      * @param array $items
      * @param string|null $sessionId
      * @param string|null $browser_agent
-     * @param string|null $ip_address
+     * @param string $ip_address
      * @return void
      */
     public function extracted(string $currency,object $object,string $value,array $items,string $payment_mode,float $price,int $quantity,
-                              ?string $userId="",?string $coupon="",?array $tags=[],?string $sessionId="",?float $shipping_cost=0,
-                              ?float $tax=0,?string $browser_agent=null,?string $ip_address=null): void
+                              string $ip_address,?string $browser_agent=null,?string $userId="",?string $coupon="",?array $tags=[],
+                              ?string $sessionId="",?float $shipping_cost=0,?float $tax=0): void
     {
         $object->currency = $currency;
         $object->value = $value;

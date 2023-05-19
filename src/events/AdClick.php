@@ -13,16 +13,16 @@ class AdClick extends WebEvent
     protected ?string $sessionId;
     protected string $ad_url;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $ad_event_id,string $ad_location,string $ad_url,?string $browser_agent=null,
-                                ?string $ip_address=null,
+    public function __construct(string $ad_event_id,string $ad_location,string $ad_url,string $ip_address,
+                                ?string $browser_agent = null,
                                 ?array $tags=[],
                                 string $userId = "",
                                 string $sessionId=""
     )
     {
-        $this->extracted($this,$ad_event_id,$ad_location,$ad_url,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($this,$ad_event_id,$ad_location,$ad_url,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["ad_event_id"] = $ad_event_id;
         $object["tags"] = $tags;
@@ -35,8 +35,8 @@ class AdClick extends WebEvent
                             date('Y-m-d\TH:i:s'), "ta_web", "ad_click", $object);
     }
 
-    public function extracted(object $object,string $ad_event_id,string $ad_location,string $ad_url,?array $tags=[],
-                              ?string $userId="",?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+    public function extracted(object $object,string $ad_event_id,string $ad_location,string $ad_url,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->ad_event_id = $ad_event_id;
         $object->tags = $tags;

@@ -6,19 +6,19 @@ use repalogic\tyrios\analytics\data\WebEvent;
 
 class FirstVisit extends WebEvent
 {
-    protected string|null $ip_address;
+    protected string $ip_address;
     protected array|null $tags;
     protected ?string $userId;
     protected string $traffic_name;
     protected ?string $sessionId;
     protected string|null $browser_agent;
 
-    public function __construct(string $traffic_name,?string $ip_address = null,?string $browser_agent = null,
+    public function __construct(string $traffic_name,string $ip_address,?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $userId ="",
                                 string $sessionId = ""
     ){
-        $this->extracted($this,$traffic_name,$ip_address,$tags,$userId,$sessionId,$browser_agent);
+        $this->extracted($this,$traffic_name,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["traffic_name"] = $traffic_name;
         $object["tags"] = $tags;
@@ -28,8 +28,8 @@ class FirstVisit extends WebEvent
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d\TH:i:s'), "ta_web", "first_visit",$object);
     }
-    public function extracted(object $object,string $traffic_name,?string $ip_address=null,?array $tags=[],?string $userId="",
-                              ?string $sessionId="",?string $browser_agent=null): void
+    public function extracted(object $object,string $traffic_name,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->traffic_name = $traffic_name;
         $object->ip_address = $ip_address;

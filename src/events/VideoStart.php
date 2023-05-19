@@ -14,12 +14,12 @@ class VideoStart extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $video_duration,string $video_provider,string $video_title,
                                 string $video_url,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 string $userId = "",
                                 string $sessionId = ""

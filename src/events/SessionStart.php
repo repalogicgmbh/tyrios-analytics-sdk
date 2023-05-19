@@ -11,9 +11,10 @@ class SessionStart extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $start_session_id,?string $browser_agent = null,?string $ip_address = null,
+    public function __construct(string $start_session_id,string $ip_address,
+                                ?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $userId = "",
                                 string $sessionId = ""

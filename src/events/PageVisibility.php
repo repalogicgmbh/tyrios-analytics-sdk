@@ -1,8 +1,6 @@
 <?php
 namespace repalogic\tyrios\analytics\events;
 
-use repalogic\tyrios\analytics\data\BasicEvent;
-use repalogic\tyrios\analytics\data\SystemInformation;
 use repalogic\tyrios\analytics\data\WebEvent;
 
 class PageVisibility extends WebEvent {
@@ -15,12 +13,11 @@ class PageVisibility extends WebEvent {
     protected array|null $tags;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
 	public function __construct(string $url,string $pageTitle,string $visibilityStatus,string $visibilityTime,
-                                SystemInformation $sysInfo,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 string $userId="",
                                 string $sessionId=""
@@ -30,7 +27,6 @@ class PageVisibility extends WebEvent {
 		$this->pageTitle = $pageTitle;
 		$this->visibilityStatus = $visibilityStatus;
 		$this->visibilityTime = $visibilityTime;
-		$this->sysInfo = $sysInfo;
         $this->browser_agent = $browser_agent;
         $this->ip_address = $ip_address;
 
@@ -40,7 +36,6 @@ class PageVisibility extends WebEvent {
         $object["sessionId"] = $sessionId;
         $object["visibilityStatus"] = $visibilityStatus;
         $object["visibilityTime"] = $visibilityTime;
-        $object["sysInfo"] = $sysInfo;
 
         parent::__construct($userId,$sessionId,$tags,$browser_agent,$ip_address,
                             date('Y-m-d\TH:i:s'), "ta_web", "page_visibility",$object);
@@ -54,7 +49,6 @@ class PageVisibility extends WebEvent {
 			"url"				=> $this->url,
 			"visibilityStatus"	=> $this->visibilityStatus,
 			"visibilityTime"	=> $this->visibilityTime,
-//			"systemInformation" => $this->sysInfo->getSystemInfo(),
             "browser_agent"     => $this->browser_agent,
             "ip_address"        => $this->ip_address
 		];

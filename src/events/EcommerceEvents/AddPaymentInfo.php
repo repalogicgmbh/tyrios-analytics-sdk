@@ -17,18 +17,18 @@ class AddPaymentInfo extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $currency, string $value,array $items,string $payment_type,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $coupon = "",
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     ){
 
-        $this->extracted($currency,$this,$value,$payment_type,$items,$coupon,$sessionId,$browser_agent,$ip_address,$tags,$userId);
+        $this->extracted($currency,$this,$value,$payment_type,$items,$ip_address,$browser_agent,$coupon,$sessionId,$tags,$userId);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -52,7 +52,6 @@ class AddPaymentInfo extends WebEvent
         $this->attributes["coupon"] = $this->coupon;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
-//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
 
@@ -70,11 +69,11 @@ class AddPaymentInfo extends WebEvent
      * @param array $items
      * @param string|null $sessionId
      * @param string|null $browser_agent
-     * @param string|null $ip_address
+     * @param string $ip_address
      * @return void
      */
-    public function extracted(string $currency,object $object,string $value,string $payment_type, array $items,?string $coupon="",
-                              ?string $sessionId="",?string $browser_agent="",?string $ip_address="",?array $tags=[],?string $userId=""): void
+    public function extracted(string $currency,object $object,string $value,string $payment_type, array $items,string $ip_address,
+                              ?string $browser_agent=null,?string $coupon="",?string $sessionId="",?array $tags=[],?string $userId=""): void
     {
         $object->currency = $currency;
         $object->value = $value;

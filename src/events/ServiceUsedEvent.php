@@ -13,10 +13,10 @@ class ServiceUsedEvent extends WebEvent {
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-	public function __construct(string $app,string $functionality,string $project,?string $browser_agent = null,
-                                ?string $ip_address = null,
+	public function __construct(string $app,string $functionality,string $project,string $ip_address,
+                                ?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $sessionId = "",
                                 string $userId = ""
@@ -41,7 +41,6 @@ class ServiceUsedEvent extends WebEvent {
             "functionality"  	=> $this->functionality,
             "project"	 		=> $this->project,
             "tags"				=> $this->tags,
-//            "systemInformation" => SystemInformation::getSystemInfo(),
             "browser_agent"     => $this->browser_agent,
             "ip_address"        => $this->ip_address
 		];

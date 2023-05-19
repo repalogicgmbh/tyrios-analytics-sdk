@@ -11,21 +11,20 @@ class SelectPromotion extends WebEvent
     protected string $promotion_id;
     protected string $promotion_name;
     protected array $items;
-    protected string $coupon;
     protected array|null $tags;
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $creative_name,string $creative_slot,string $promotion_id,string $promotion_name,array $items,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     ){
-        $this->extracted($creative_name,$this,$creative_slot,$promotion_id,$promotion_name,$items,$userId,$tags,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($creative_name,$this,$creative_slot,$promotion_id,$promotion_name,$items,$ip_address,$browser_agent,$userId,$tags,$sessionId);
 
         $object["creative_name"] = $creative_name;
         $object["creative_slot"] = $creative_slot;
@@ -41,7 +40,7 @@ class SelectPromotion extends WebEvent
     }
 
     public function extracted(string $creative_name,object $object,string $creative_slot,string $promotion_id,string $promotion_name,
-                              array $items,?string $userId="",?array $tags=[],?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+                              array $items,string $ip_address,?string $browser_agent=null,?string $userId="",?array $tags=[],?string $sessionId=""): void
     {
         $object->creative_name = $creative_name;
         $object->creative_slot = $creative_slot;

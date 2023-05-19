@@ -16,16 +16,16 @@ class ViewItemList extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $item_list_id, string $item_list_name,array $items,string $item_list_category,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     ){
-        $this->extracted($item_list_id,$this,$item_list_name,$item_list_category,$items,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($item_list_id,$this,$item_list_name,$item_list_category,$items,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["item_list_id"] = $item_list_id;
         $object["item_list_name"] = $item_list_name;
@@ -47,7 +47,6 @@ class ViewItemList extends WebEvent
         $this->attributes["item_list_category"] = $this->item_list_category;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["items"] = $this->items;
-//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
@@ -65,7 +64,7 @@ class ViewItemList extends WebEvent
      * @return void
      */
     public function extracted(string $item_list_id,object $object,string $item_list_name,string $item_list_category,array $items,
-                              ?array $tags=[],?string $userId="",?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+                              string $ip_address,?string $browser_agent=null,?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->item_list_id = $item_list_id;
         $object->item_list_name = $item_list_name;

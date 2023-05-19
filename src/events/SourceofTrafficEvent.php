@@ -11,14 +11,14 @@ class SourceofTrafficEvent extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $traffic_name,?string $browser_agent = null,?string $ip_address = null,
+    public function __construct(string $traffic_name,string $ip_address,?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $userId="",
                                 string $sessionId=""
     ){
-        $this->extracted($this,$traffic_name,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($this,$traffic_name,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["traffic_name"] = $traffic_name;
         $object["tags"] = $tags;
@@ -29,8 +29,8 @@ class SourceofTrafficEvent extends WebEvent
                             date('Y-m-d\TH:i:s'), "ta_web", "source_of_traffic_event",$object);
     }
 
-    public function extracted(object $object,string $traffic_name,?array $tags=[],?string $userId="",?string $sessionId="",
-                              ?string $browser_agent=null,?string $ip_address=null): void
+    public function extracted(object $object,string $traffic_name,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->traffic_name = $traffic_name;
         $object->tags = $tags;

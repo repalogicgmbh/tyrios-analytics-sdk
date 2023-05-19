@@ -15,17 +15,17 @@ class ViewItem extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $currency,string $value,Item $item,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     )
     {
-        $this->extracted($currency,$this,$value,$item,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($currency,$this,$value,$item,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -45,7 +45,6 @@ class ViewItem extends WebEvent
         $this->attributes["value"] = $this->value;
         $this->attributes["tags"] = $this->tags;
         $this->attributes["item"] = $this->item;
-//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();
@@ -60,11 +59,11 @@ class ViewItem extends WebEvent
      * @param Item $item
      * @param string|null $sessionId
      * @param string|null $browser_agent
-     * @param string|null $ip_address
+     * @param string $ip_address
      * @return void
      */
-    public function extracted(string $currency,object $object,string $value,Item $item,?array $tags=[],?string $userId="",
-                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+    public function extracted(string $currency,object $object,string $value,Item $item,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->currency = $currency;
         $object->value = $value;

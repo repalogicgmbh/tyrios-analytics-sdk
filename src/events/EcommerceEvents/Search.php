@@ -11,16 +11,17 @@ class Search extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $search_term,?string $browser_agent = null,?string $ip_address = null,
+    public function __construct(string $search_term,string $ip_address,
+                                ?string $browser_agent = null,
                                 bool $autosuggest = false,
                                 ?array $tags = [],
                                 string $userId = "",
                                 string $sessionId = "",
     )
     {
-        $this->extracted($search_term,$this,$autosuggest,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($search_term,$this,$autosuggest,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["search_term"] = $search_term;
         $object["autosuggest"] = $autosuggest;
@@ -32,8 +33,8 @@ class Search extends WebEvent
                             date('Y-m-d\TH:i:s'), "ta_web", "search", $object);
     }
 
-    public function extracted(string $search_term,object $object,bool $autosuggest,?array $tags=[],?string $userId="",
-                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+    public function extracted(string $search_term,object $object,bool $autosuggest,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->search_term = $search_term;
         $object->autosuggest = $autosuggest;

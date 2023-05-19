@@ -13,16 +13,16 @@ class ContinueCheckout extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $currency,string $value,bool $purchase_made,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $userId = "",
                                 ?string $sessionId = ""
     ){
-        $this->extracted($currency,$this,$value,$purchase_made,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($currency,$this,$value,$purchase_made,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["currency"] = $currency;
         $object["value"] = $value;
@@ -35,8 +35,8 @@ class ContinueCheckout extends WebEvent
                             date('Y-m-d\TH:i:s'), "ta_web", "continue_checkout", $object);
     }
 
-    public function extracted(string $currency,object $object,string $value,bool $purchase_made,?array $tags=[],?string $userId="",
-                              ?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+    public function extracted(string $currency,object $object,string $value,bool $purchase_made,string $ip_address,?string $browser_agent=null,
+                              ?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->currency = $currency;
         $object->value = $value;

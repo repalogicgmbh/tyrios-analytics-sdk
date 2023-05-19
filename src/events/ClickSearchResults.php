@@ -13,9 +13,9 @@ class ClickSearchResults extends WebEvent
     protected ?string $sessionId;
     protected ?string $userId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $search_term,?string $search_query="",?string $browser_agent=null,?string $ip_address=null,
+    public function __construct(string $search_term,string $ip_address,?string $browser_agent=null,?string $search_query="",
                                 ?array $tags=[],
                                 string $search_type ="",
                                 string $sessionId ="",

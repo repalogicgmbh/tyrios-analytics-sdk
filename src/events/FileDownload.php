@@ -18,10 +18,10 @@ class FileDownload extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $file_extension,string $file_name,?string $browser_agent = null,
-                                ?string $ip_address = null,
+    public function __construct(string $file_extension,string $file_name,string $ip_address,
+                                ?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $link_classes = "",
                                 string $link_domain = "",
@@ -70,7 +70,6 @@ class FileDownload extends WebEvent
         $this->attributes["link_id"] = $this->link_id;
         $this->attributes["link_text"] = $this->link_text;
         $this->attributes["link_url"] = $this->link_url;
-//        $this->attributes["systemInformation"] = SystemInformation::getSystemInfo();
         $this->attributes["browser_agent"] = $this->browser_agent;
         $this->attributes["ip_address"] = $this->ip_address;
         return parent::toJsonStruct();

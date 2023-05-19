@@ -8,9 +8,9 @@ abstract class WebEvent extends BasicEvent
     protected ?string $sessionId;
     protected array|null $tags;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(?string $userId,?string $sessionId,?array $tags,?string $browser_agent,?string $ip_address,
+    public function __construct(?string $userId,?string $sessionId,?array $tags,?string $browser_agent,string $ip_address,
                                 string $dateTime,string $eventType,string $eventName,?array $attributes)
     {
         if(!$browser_agent){
@@ -20,10 +20,6 @@ abstract class WebEvent extends BasicEvent
             if(isset($_SERVER['REMOTE_ADDR'])){
                 $ip_address = $this->getAnonymizeIP($_SERVER['REMOTE_ADDR']);
             }
-        }
-
-        if($tags === null){
-            $tags = [];
         }
 
         $this->userId = $userId;

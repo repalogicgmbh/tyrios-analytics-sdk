@@ -15,16 +15,16 @@ class ViewPromotion extends WebEvent
     protected ?string $userId;
     protected ?string $sessionId;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
     public function __construct(string $creative_name,string $promotion_id,array $promotion_items_list,string $promotion_name,
+                                string $ip_address,
                                 ?string $browser_agent = null,
-                                ?string $ip_address = null,
                                 ?array $tags = [],
                                 ?string $userId = "",
                                 ?string $sessionId = "",
     ){
-        $this->extracted($creative_name,$this,$promotion_id,$promotion_name,$promotion_items_list,$tags,$userId,$sessionId,$browser_agent,$ip_address);
+        $this->extracted($creative_name,$this,$promotion_id,$promotion_name,$promotion_items_list,$ip_address,$browser_agent,$tags,$userId,$sessionId);
 
         $object["creative_name"] = $creative_name;
         $object["promotion_id"] = $promotion_id;
@@ -46,15 +46,15 @@ class ViewPromotion extends WebEvent
      * @param string $promotion_id
      * @param array|null $tags
      * @param string|null $userId
-     * @param string|null $promotion_name
+     * @param string $promotion_name
      * @param array $promotion_items_list
      * @param string|null $sessionId
      * @param string|null $browser_agent
-     * @param string|null $ip_address
+     * @param string $ip_address
      * @return void
      */
     public function extracted(string $creative_name,object $object,string $promotion_id,string $promotion_name,array $promotion_items_list,
-                              ?array $tags=[],?string $userId="",?string $sessionId="",?string $browser_agent=null,?string $ip_address=null): void
+                              string $ip_address,?string $browser_agent=null,?array $tags=[],?string $userId="",?string $sessionId=""): void
     {
         $object->creative_name = $creative_name;
         $object->promotion_id = $promotion_id;

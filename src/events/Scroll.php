@@ -12,10 +12,10 @@ class Scroll extends WebEvent
     protected ?string $sessionId;
     protected string $engagement_time_msec;
     protected string|null $browser_agent;
-    protected string|null $ip_address;
+    protected string $ip_address;
 
-    public function __construct(string $section_name,string $engagement_time_msec,?string $browser_agent = null,
-                                ?string $ip_address = null,
+    public function __construct(string $section_name,string $engagement_time_msec,string $ip_address,
+                                ?string $browser_agent = null,
                                 ?array $tags = [],
                                 string $sessionId = "",
                                 string $userId="",

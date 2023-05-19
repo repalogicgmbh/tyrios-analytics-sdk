@@ -10,11 +10,11 @@ class PageView extends WebEvent {
 	protected ?string $userId;
 	protected ?string $sessionId;
 	protected string $pageTitle;
-	protected string|null $ip_address;
+	protected string $ip_address;
 	protected string|null $previous_page;
     protected string|null $browser_agent;
 
-	public function __construct(string $url,string $pageTitle,?string $ip_address = null,
+	public function __construct(string $url,string $pageTitle,string $ip_address,
                                 ?string $browser_agent = null,
                                 ?string $previous_page = null,
                                 ?array $tags = [],
