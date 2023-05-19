@@ -7,7 +7,7 @@ trait BasicTrait {
             ['/\.\d*$/', '/[\da-f]*:[\da-f]*$/'],
             ['.XXX', 'XXXX:XXXX'],
             $ip
-        ) ?? null;
+        ) ?? "";
     }
 
     public function getBrowserAgent(){
