@@ -72,11 +72,6 @@ class AnalyticsSender
         $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
         fwrite($socket, $request);
 
-        $response = '';
-        while (!feof($socket)) {
-            $response .= fgets($socket);
-        }
-
         fclose($socket);
 
     }
