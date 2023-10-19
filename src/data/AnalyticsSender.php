@@ -69,10 +69,22 @@ class AnalyticsSender
 
         $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
 
-        $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
-        fwrite($socket, $request);
+        try{
+            $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
+            if (!$socket) {
+                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Error : ".socket_strerror(socket_last_error())),$socket,1);
+            }
 
-        fclose($socket);
+            if (fwrite($socket, $request) === false) {
+                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Request Sending Error : " . socket_strerror(socket_last_error())),$request,1);
+            }
+
+            if (!fclose($socket)) {
+                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Close Error : " .socket_strerror(socket_last_error())) , $socket , 1);
+            }
+        }catch (\Exception $exception){
+            helper("EXCEPTION")->sendExceptionMail($exception , null ,1);
+        }
 
     }
     public function sendEventsSync($basicEvents,$environment_type)
