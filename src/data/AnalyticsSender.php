@@ -71,9 +71,9 @@ class AnalyticsSender
         $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
 
         try{
-            $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port']);
+            $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port'],$errCode, $errMessage, $timeout);
             if (!$socket) {
-                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Error : ".socket_strerror(socket_last_error())),$socket,1);
+                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Error ($errMessage($errCode)): ".socket_strerror(socket_last_error())),$socket,1);
             }
 
             // Send the request
