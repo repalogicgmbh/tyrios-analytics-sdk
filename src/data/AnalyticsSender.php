@@ -66,6 +66,7 @@ class AnalyticsSender
         $request .= "Content-Type: application/json\r\n\r\n";
 
         $request .= $postData;
+        $timeout  = 1; // Timeout in seconds
 
         $prefix = substr($endpoint, 0, 8) === 'https://' ? 'tls://' : '';
 
@@ -75,10 +76,20 @@ class AnalyticsSender
                 helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Error : ".socket_strerror(socket_last_error())),$socket,1);
             }
 
+            // Send the request
             if (fwrite($socket, $request) === false) {
                 helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Request Sending Error : " . socket_strerror(socket_last_error())),$request,1);
             }
 
+            // Set a read timeout for the response
+            stream_set_timeout($socket, $timeout);
+
+            $response = '';
+            while (!feof($socket)) {
+                $response .= fgets($socket);
+            }
+
+            // Close the socket
             if (!fclose($socket)) {
                 helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Close Error : " .socket_strerror(socket_last_error())) , $socket , 1);
             }
