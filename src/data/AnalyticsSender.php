@@ -73,12 +73,12 @@ class AnalyticsSender
         try{
             $socket = fsockopen($prefix.$endpointParts['host'], $endpointParts['port'],$errCode, $errMessage, $timeout);
             if (!$socket) {
-                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Error ($errMessage($errCode)): ".socket_strerror(socket_last_error())),$socket,1);
+                throw new \Exception("Connection Error ($errMessage($errCode)): ".socket_strerror(socket_last_error()));
             }
 
             // Send the request
             if (fwrite($socket, $request) === false) {
-                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Request Sending Error : " . socket_strerror(socket_last_error())),$request,1);
+                throw new \Exception("Request Sending Error : " . socket_strerror(socket_last_error()));
             }
 
             // Set a read timeout for the response
@@ -91,10 +91,10 @@ class AnalyticsSender
 
             // Close the socket
             if (!fclose($socket)) {
-                helper("EXCEPTION")->sendExceptionMail(throw new \Exception("Connection Close Error : " .socket_strerror(socket_last_error())) , $socket , 1);
+                throw new \Exception("Connection Close Error : " .socket_strerror(socket_last_error()));
             }
         }catch (\Exception $exception){
-            helper("EXCEPTION")->sendExceptionMail($exception , null ,1);
+            throw new \Exception($exception);
         }
 
     }
